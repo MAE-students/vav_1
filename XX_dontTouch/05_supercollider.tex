@@ -1,0 +1,42 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code Snippet Environment Configuration (SuperCollider + Minted + tcolorbox)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define a macro to display the prompt with a numbered label
+\newcommand{\scprompt}[1]{{\ttfamily\llap{{[#1]:\quad}}\vspace{-\baselineskip}}}
+
+% Set up a tcolorbox style for SuperCollider code formatting
+\tcbset{
+    sccodebox/.style={
+        enhanced jigsaw, breakable,
+        colback=gray!10, colframe=gray!20!black,
+        boxrule=1pt, top=2pt, bottom=2pt, left=2pt, right=2pt,
+        sharp corners, before skip=10pt, after skip=10pt,
+        attach boxed title to top left,
+        boxed title style={empty, top=0pt, bottom=0pt, left=2pt, right=2pt},
+        fonttitle=\normalfont,
+        listing only
+    }
+}
+
+% Define a new tcolorbox environment for SuperCollider code with automatic numbering
+\NewTCBListing[auto counter, number within=chapter]{supercollider}{ O{} m }{
+    sccodebox,
+    title={\color{black}\textbf{#1}}, % Display title in bold
+    label={#2},
+    listing engine=minted,
+    minted language=text, % SuperCollider is not directly supported, using text
+    minted options={autogobble,breaklines,mathescape,escapeinside=||},
+    before upper={
+        \addcontentsline{lol}{lstlisting}{\thetcbcounter ~~~ #1} % Add entry to List of Listings
+        \scprompt{\thetcbcounter} % Display the prompt with numbering
+    }
+}
+
+% Unnumbered version
+\NewTCBListing{supercollider*}{}{
+    sccodebox,
+    listing engine=minted,
+    minted language=text, % SuperCollider code is treated as plain text
+    minted options={autogobble,breaklines,mathescape,escapeinside=||},
+}

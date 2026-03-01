@@ -1,0 +1,249 @@
+%! TEX root = main.tex  
+
+\chapter{Energy Approach}
+
+\section{Virtual Work and D'Alembert's Principles}
+
+\subsection{Virtual Work Principle} 
+
+The principle of virtual work states that, for a mechanical system in static equilibrium, the total virtual work performed by all external forces (including torques) during any virtual displacement compatible with the system’s constraints is zero:
+\[
+\delta W = \sum_{j=1}^{N_F} \vv{F_j} \cdot \vv{\delta P_j} + \sum_{r=1}^{N_C} \vv{C_r} \cdot \vv{\delta \theta_r} = 0
+\]
+where \( \vv{F_j} \) and \( \vv{C_r} \) are forces and torques, respectively, and \( \vv{\delta P_j} \), \( \vv{\delta \theta_r} \) are admissible virtual displacements and rotations. Assume that all forces and displacements lie in the \( x, y, z \) plane. Then, the vectors can be expressed in the canonical basis:
+\[
+\left\{
+\begin{aligned}
+\vv{F_j} &= f_{x_j} \vv{e_x} + f_{y_j} \vv{e_y} \\
+\vv{\delta P_j} &= \delta x_j \vv{e_x} + \delta y_j \vv{e_y}
+\end{aligned}
+\right.
+\quad \quad
+\left\{
+\begin{aligned}
+\vv{C_r} = C_r \vv{e_z} \\
+\vv{\delta \theta_r} = \delta \theta_r \vv{e_z}
+\end{aligned}
+\right.
+\]
+Given the orthogonality of the unit vectors \( \vv{e_x} \cdot \vv{e_y} = 0 \), \( \vv{e_x} \cdot \vv{e_x} = 1 \), \( \vv{e_y} \cdot \vv{e_y} = 1 \), and so on, the scalar products simplify:
+\[
+\vv{F_j} \cdot \vv{\delta P_j} = f_{x_j} \delta x_j + f_{y_j} \delta y_j, \quad \vv{C_r} \cdot \vv{\delta \theta_r} = C_r \delta \theta_r
+\]
+Thus, the total virtual work becomes:
+\[
+\delta W = \sum_{j=1}^{N_F} \left( f_{x_j} \delta x_j + f_{y_j} \delta y_j \right) + \sum_{r=1}^{N_C} C_r \delta \theta_r = 0
+\]
+Let the system be described by \( n \) independent generalized coordinates \( q_1, q_2, \ldots, q_n \). Each displacement component can be expressed as a function of the generalized coordinates, for example \( x_j \) becomes:
+\[
+x_j = x_j(q_1, \ldots, q_n) \quad \Rightarrow \quad \delta x_j = \sum_{i=1}^n \frac{\partial x_j}{\partial q_i} \delta q_i
+\]
+Substituting these into the expression for \( \delta W \), obtain:
+
+\begin{align*}
+    \delta W &= \sum_{j=1}^{N_F} \left( f_{x_j} \sum_{i=1}^n \frac{\partial x_j}{\partial q_i} \delta q_i + f_{y_j} \sum_{i=1}^n \frac{\partial y_j}{\partial q_i} \delta q_i \right) + \sum_{r=1}^{N_C} C_r \sum_{i=1}^n \frac{\partial \theta_r}{\partial q_i} \delta q_i \\
+    &= \sum_{i=1}^n \left[ \sum_{j=1}^{N_F} \left( f_{x_j} \frac{\partial x_j}{\partial q_i} + f_{y_j} \frac{\partial y_j}{\partial q_i} \right) + \sum_{r=1}^{N_C} C_r \frac{\partial \theta_r}{\partial q_i} \right] \delta q_i = 0
+\end{align*}
+
+Define the generalized force associated with \( q_i \) as:
+\[
+Q_i = \sum_{j=1}^{N_F} \left( f_{x_j} \frac{\partial x_j}{\partial q_i} + f_{y_j} \frac{\partial y_j}{\partial q_i} \right) + \sum_{r=1}^{N_C} C_r \frac{\partial \theta_r}{\partial q_i}
+\]
+Then the virtual work is compactly written as:
+\[
+\delta W = \sum_{i=1}^n Q_i \delta q_i = 0
+\]
+Since the \( \delta q_i \) are independent, the equilibrium condition implies:
+\[
+Q_i = 0 \quad \forall i = 1, \dots, n
+\]
+These are the \( n \) scalar equations of motion of the system in generalized coordinates.
+
+\subsection{Extension to Dynamics - D’Alembert Principle} 
+
+To extend the virtual work principle to dynamics, the inertial contributions are added to the applied ones, resulting in the equilibrium of all effective forces. Accordingly, the dynamic virtual work becomes:
+\[
+\delta W = \sum_{j=1}^{N_F} \vv{F_j} \cdot \vv{\delta P_j} + \sum_{r=1}^{N_C} \vv{C_r} \cdot \vv{\delta \theta_r} + \sum_{j=1}^{N_B} \left( -m_j \vv{\dot{v}_j} \cdot \vv{\delta G_j} -J_j \vv{\dot{\omega}_r} \cdot \vv{\delta \theta_j} \right) = 0
+\]
+As before, assuming that all forces and displacements lie in the \( x, y, z \) plane, giving the orthogonality of the unit vectors and letting the system be described by \( n \) independent generalized coordinates \( q_1, q_2, \ldots, q_n \), the full virtual work becomes:
+\[
+\delta W = \sum_{i=1}^n Q_i \delta q_i 
++ \sum_{i=1}^n \left[ \sum_{j=1}^{N_G} m_j \left( \ddot{x}_j \frac{\partial x_j}{\partial q_i} + \ddot{y}_j \frac{\partial y_j}{\partial q_i} \right)
++ \sum_{r=1}^{N_G} J_r  \dot{\omega}_r \frac{\partial \theta_r}{\partial q_i} \right] \delta q_i
+\]
+Define the inertial generalized force \( Q_{\text{in},i} \) as:
+\[
+Q_{\text{in},i} = - \sum_{j=1}^{N_G} m_j \left( \ddot{x}_j \frac{\partial x_j}{\partial q_i} + \ddot{y}_j \frac{\partial y_j}{\partial q_i} \right)
+- \sum_{r=1}^{N_G} J_r  \dot{\omega}_r \frac{\partial \theta_r}{\partial q_i}
+\]
+Then the dynamic virtual work reads:
+\[
+\delta W = \sum_{i=1}^n \left( Q_i + Q_{\text{in},i} \right) \delta q_i = 0
+\]
+Since \( \delta q_i \) are independent, the equations of motion become:
+\[
+Q_i + Q_{\text{in},i} = 0 \quad \forall i = 1, \dots, n
+\]
+These are the dynamic equations of motion of the system in generalized coordinates.
+
+\section{Lagrange's Equation}
+
+Consider a mechanical system described by \( n \) generalized coordinates \( q_1, \dots, q_n \), and let the Lagrangian be defined as:
+\[
+\mathcal{L}(q_i, \dot{q}_i, t) = T(q_i, \dot{q}_i, t) - V(q_i, t)
+\]
+where \( T \) is the total kinetic energy and \( V \) is the potential energy of the system. The dynamic equations of motion in generalized coordinates follow from the principle of virtual work, extended to dynamics (D’Alembert principle). They read:
+\[
+Q_i + Q_{\text{in},i} = 0 \quad \forall i = 1, \dots, n
+\]
+where:
+
+\begin{itemize}
+    \item \( Q_i \) is the generalized force associated to external and non-conservative contributions;
+    \item \( Q_{\text{in},i} \) is the generalized inertial force.
+\end{itemize}
+
+Decompose the total generalized force as:
+\[
+Q_i = Q_{\text{ext},i} + Q_{\text{diss},i} + Q_{\text{cons},i}
+\]
+
+\subsection{Generalized Inertial Forces}
+
+Using König’s theorem, the kinetic energy of a multi-body system composed of masses \( m_j \) and inertias \( J_j \) is:
+\[
+T = \sum_{j=1}^{N_G} \frac{1}{2} m_j v_j^2 + \sum_{j=1}^{N_G} \frac{1}{2} J_j \omega_j^2
+\]
+The generalized inertial force is defined as:
+\[
+Q_{\text{in},i} = - \frac{d}{dt} \left( \frac{\partial T}{\partial \dot{q}_i} \right) + \frac{\partial T}{\partial q_i}
+\]
+This expression arises naturally from the virtual work of the inertial terms in the Lagrange formulation.
+
+\subsection{Conservative Contributions}
+
+Conservative forces are forces that derive from a scalar potential function. The work done by these forces depends only on the initial and final positions, and not on the path taken. The fundamental relation is:
+\[
+\delta W_{\text{cons}} = - \delta V \quad \Rightarrow \quad Q_{\text{cons},i} = - \frac{\partial V}{\partial q_i}
+\]
+Let us derive this result from the definition of conservative virtual work in the \( x,y \) plane. Consider a force \( \vv{F} = f_x \vv{e_x} + f_y \vv{e_y} \) acting at a point with position \( \vv{r} = x \vv{e_x} + y \vv{e_y} \). The virtual work done during a virtual displacement \( \vv{\delta r} = \delta x \vv{e_x} + \delta y \vv{e_y} \) is:
+\[
+\delta W = \vv{F} \cdot \vv{\delta r} = f_x \delta x + f_y \delta y
+\]
+This can be written as the total differential:
+\[
+\delta W = \frac{\partial U}{\partial x} \delta x + \frac{\partial U}{\partial y} \delta y = dU
+\quad \Rightarrow \quad f_x = \frac{\partial U}{\partial x}, \quad f_y = \frac{\partial U}{\partial y}
+\]
+Define the potential energy as:
+\[
+V = -U
+\quad \Rightarrow \quad f_x = -\frac{\partial V}{\partial x}, \quad f_y = -\frac{\partial V}{\partial y}
+\]
+Now, switching to generalized coordinates \( q_i \), express:
+\[
+\delta x = \sum_i \frac{\partial x}{\partial q_i} \delta q_i, \quad
+\delta y = \sum_i \frac{\partial y}{\partial q_i} \delta q_i
+\]
+So the virtual work becomes:
+\[
+\delta W = f_x \delta x + f_y \delta y
+= \sum_i \left( f_x \frac{\partial x}{\partial q_i} + f_y \frac{\partial y}{\partial q_i} \right) \delta q_i
+\]
+Hence:
+\[
+Q_{\text{cons},i} = f_x \frac{\partial x}{\partial q_i} + f_y \frac{\partial y}{\partial q_i}
+\quad \Rightarrow \quad
+- Q_{\text{cons},i} = \frac{\partial V}{\partial q_i}
+\]
+
+\paragraph{Elastic Potential Energy}
+
+Consider a spring with stiffness \( k \) and elongation \( s \). The elastic potential energy is defined as:
+\[
+V_{\text{el}} = \int_0^s F  d\eta = \int_0^s k\eta  d\eta = \frac{1}{2} k s^2
+\]
+The conservative force is recovered as:
+\[
+F = -\frac{dV_{\text{el}}}{ds} = -ks
+\]
+Now suppose the elongation \( s \) depends on a generalized coordinate \( q_i \), e.g., \( s = \Delta l(q_i) \), then:
+\[
+- Q_{\text{cons},i} = \frac{\partial V_{\text{el}}}{\partial q_i} = \frac{\partial}{\partial q_i} \left( \frac{1}{2} k s^2 \right)
+= k s \frac{\partial s}{\partial q_i}
+\]
+This gives the contribution of the spring to the generalized force.
+
+\paragraph{Gravitational Potential Energy}
+
+For a mass \( m \) located at height \( h(q_i) \), the gravitational potential energy is:
+\[
+V_g = m g h(q_i) \quad \Rightarrow \quad - Q_{\text{cons},i} = \frac{\partial V_g}{\partial q_i} = m g \frac{\partial h}{\partial q_i}
+\]
+This is the generalized force associated with weight projected along \( q_i \). Usually, this contribution is zero.
+
+\subsection{Dissipative Contributions}
+
+Dissipative forces, such as those produced by viscous dampers, oppose motion and dissipate energy from the system. These are not derivable from a potential function. Their effect is modeled through the Rayleigh dissipation function \( D \), defined as:
+\[
+D = \frac{1}{2} C \dot{\delta}^2
+\]
+where \( \delta \) is the elongation (relative displacement) of the damper, and \( \dot{\delta} \) its velocity. Assume the damper is connected between two points, with elongation \( \delta \) depending on the generalized coordinates \( q_i \). Then, the viscous force is:
+\[
+F_{\text{diss}} = -C \dot{\delta}
+\quad \Rightarrow \quad
+Q_{\text{diss},i} = F_{\text{diss}} \cdot \frac{\partial \delta}{\partial q_i} = -C \dot{\delta} \frac{\partial \delta}{\partial q_i}
+\]
+Assume that the elongation \( \delta \) of the damper depends on the generalized coordinates:
+\[
+\delta = \delta(q_1, \dots, q_n)
+\quad \Rightarrow \quad
+\dot{\delta} = \sum_{k=1}^n \frac{\partial \delta}{\partial q_k} \dot{q}_k
+\]
+Compute the partial derivative of \( \dot{\delta} \) with respect to \( \dot{q}_i \):
+\[
+\frac{\partial \dot{\delta}}{\partial \dot{q}_i}
+= \frac{\partial}{\partial \dot{q}_i} \left( \sum_{k=1}^n \frac{\partial \delta}{\partial q_k} \dot{q}_k \right)
+= \sum_{k=1}^n \frac{\partial \delta}{\partial q_k} \cdot \frac{\partial \dot{q}_k}{\partial \dot{q}_i}
+\]
+Since:
+\[
+\frac{\partial \dot{q}_k}{\partial \dot{q}_i} =
+\begin{cases}
+1 & \text{if } k = i \\
+0 & \text{if } k \neq i
+\end{cases}
+\]
+It leads to:
+\[
+\frac{\partial \dot{\delta}}{\partial \dot{q}_i} = \frac{\partial \delta}{\partial q_i}
+\]
+Then the contribution of viscous damping to the generalized forces can be obtained using:
+\[
+-Q_{\text{diss},i} 
+= C \dot{\delta} \frac{\partial \delta}{\partial q_i} 
+= C \dot{\delta} \frac{\partial \dot{\delta}}{\partial \dot{q}_i}
+= \frac{\partial}{\partial \dot{q}_i} \left( \frac{1}{2} C \dot{\delta}^2 \right)
+= \frac{\partial D}{\partial \dot{q}_i}
+\]
+This is the generalized force corresponding to viscous damping through Rayleigh's dissipation function.
+
+\subsection{Final Form of the Lagrange Equation}
+
+Starting from the D'Alembert principle applied in generalized coordinates and, as already said, considering that the total generalized force \( Q_i \) is the sum of all non-inertial contributions, the equilibrium condition gives:
+\[
+Q_{\text{ext},i} + Q_{\text{diss},i} + Q_{\text{cons},i} + Q_{\text{in},i} = 0
+\]
+Rearranging terms:
+\[
+- Q_{\text{in},i} - Q_{\text{diss},i} - Q_{\text{cons},i} = Q_{\text{ext},i}
+\]
+And substituting the analytical expressions of each term (inertial, conservative and dissipative):
+\[
+\frac{d}{dt} \left( \frac{\partial T}{\partial \dot{q}_i} \right)
+- \frac{\partial T}{\partial q_i}
++ \frac{\partial D}{\partial \dot{q}_i}
++ \frac{\partial V}{\partial q_i}
+= Q_{\text{ext},i}
+\]
+This is the general form of Lagrange’s equation for systems with conservative, dissipative, and externally forced components.

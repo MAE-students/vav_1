@@ -1,0 +1,40 @@
+% Use the custom class defined in GDTReportClass.cls
+\documentclass{GDTReportClass}
+
+% Set document metadata using custom commands from the class file
+\title{VAV Module A}  % Main title of the document
+\subtitle{Vibration Analysis Course 2024/2025 - Theory Notes}  % Subtitle
+
+\author{Giacomo De Toni}  % Authors
+\PID{}
+\SID{}  % Student ID numbers
+\advisor{Prof. Stefano Alfi}  % Advisor's name
+
+% Embed metadata for the PDF file
+\begin{filecontents}{\jobname.xmpdata}
+    \Title{VAV Module A}
+    \Author{Giacomo De Toni}
+    \Language{en-EN}
+    \Keywords{VAV \sep Physics \sep Vibration_Analysis \sep Vibroacoustic \sep PoliMI \sep Theory \sep Mechanics \sep LaTeX}
+\end{filecontents}
+
+\begin{document}
+
+    % Generate the front matter (title page, abstract, table of contents, etc.)
+    \input{01_FrontMatter/01_titlePage}     % Title page
+    \settingfrontmatter  % Configure front matter settings
+    \input{01_FrontMatter/03_summaries}     % Summaries
+
+    % Configure main content settings (resets page numbering, chapter counters, etc.)
+    \settingmaincontent  
+
+    % Include the main chapters from separate files
+    \input{02_MainMatter/01_chapter}  % Chapter 1
+    \input{02_MainMatter/02_chapter}  % Chapter 2
+    \input{02_MainMatter/03_chapter}  % Chapter 3
+    \input{02_MainMatter/04_chapter}  % Chapter 4
+    \input{02_MainMatter/05_chapter}  % Chapter 5
+    \input{02_MainMatter/06_chapter}  % Chapter 6
+    \input{02_MainMatter/07_chapter}  % Chapter 7
+
+\end{document}

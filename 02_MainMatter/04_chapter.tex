@@ -1,0 +1,441 @@
+%! TEX root = main.tex
+
+\chapter{Response of N-DOF Systems}
+
+\section{Free Vibration}
+
+\subsection{Undamped Case}
+
+Consider the undamped equation of motion:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{K} \vv{x} = \vv{0}
+\]
+Assume a solution of the form:
+\[
+\vv{x}(t) = \vv{X}  e^{\lambda t} \quad \Rightarrow \quad \vv{\dot{x}}(t) = \lambda \vv{X} e^{\lambda t}, \quad \vv{\ddot{x}}(t) = \lambda^2 \vv{X} e^{\lambda t}
+\]
+Substituting into the equation of motion:
+\[
+\boldsymbol{M} \lambda^2 \vv{X} e^{\lambda t} + \boldsymbol{K} \vv{X} e^{\lambda t} = \left( \lambda^2 \boldsymbol{M} + \boldsymbol{K} \right) \vv{X} e^{\lambda t} = \vv{0}
+\]
+Since \( e^{\lambda t} \neq 0 \) and \( \vv{X} \neq \vv{0} \), the generalized eigenvalue problem is obtained:
+\[
+\left( \lambda^2 \boldsymbol{M} + \boldsymbol{K} \right) \vv{X} = \vv{0}
+\quad \Leftrightarrow \quad
+\left( \boldsymbol{K} - \omega^2 \boldsymbol{M} \right) \vv{X} = \vv{0}
+\]
+This leads to the characteristic equation:
+\[
+\det( \boldsymbol{K} - \omega^2 \boldsymbol{M} ) = 0
+\]
+Solving this yields \( n \) positive eigenvalues \( \omega_1^2, \omega_2^2, \dots, \omega_n^2 \), corresponding to the squared natural frequencies. For each \( \omega_i \), there exists an associated eigenvector \( \vv{X}^{(i)} \) satisfying:
+\[
+\left( \boldsymbol{K} - \omega_i^2 \boldsymbol{M} \right) \vv{X}^{(i)} = \vv{0}
+\]
+Using the \( n \) contributions, the full solution becomes:
+\[
+\vv{x}(t) = \sum_{i=1}^{n} \left( \vv{X}^{(i)} A_i \cos(\omega_i t) + \vv{X}^{(i)} B_i \sin(\omega_i t) \right)
+\]
+or alternatively, in amplitude-phase form:
+\[
+\vv{x}(t) = \sum_{i=1}^{n} \vv{X}^{(i)} C_i \cos(\omega_i t - \phi_i)
+\]
+where \( A_i, B_i \) (or \( C_i, \phi_i \)) is determined by the initial conditions \( \vv{x}(0) = \vv{x_0} \), \( \vv{\dot{x}}(0) = \vv{v_0} \). Each modal vector \( \vv{X}^{(i)} \) defines the relative amplitudes and phases of the motion of the coordinates \( x_a(t) \) in that mode. The complete solution is the superposition of all such modal motions.
+
+\subsection{Damped Case}
+
+Now consider the homogeneous equation of motion for a damped N-DOF system:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{0}
+\]
+As in the undamped case, seek a solution of the form:
+\[
+\vv{x}(t) = \vv{X} e^{\lambda t}
+\quad \Rightarrow \quad
+\vv{\dot{x}}(t) = \lambda \vv{X} e^{\lambda t}, \quad
+\vv{\ddot{x}}(t) = \lambda^2 \vv{X} e^{\lambda t}
+\]
+Substituting into the equation of motion yields:
+\[
+\left( \lambda^2 \boldsymbol{M} + \lambda \boldsymbol{C} + \boldsymbol{K} \right) \vv{X} e^{\lambda t} = \vv{0}
+\quad \Rightarrow \quad
+\left[ \lambda^2 \boldsymbol{M} + \lambda \boldsymbol{C} + \boldsymbol{K} \right] \vv{X} = \vv{0}
+\]
+This is a quadratic eigenvalue problem in \( \lambda \). Solving:
+\[
+\det\left( \lambda^2 \boldsymbol{M} + \lambda \boldsymbol{C} + \boldsymbol{K} \right) = 0
+\]
+gives \( 2n \) eigenvalues \( \lambda_1, \lambda_2, \dots, \lambda_{2n} \), which for lightly damped systems typically appear as complex conjugate pairs:
+\[
+\lambda_i = -\alpha_i \pm j \omega_{di}, \quad i = 1, \dots, n
+\]
+For each eigenvalue \( \lambda_i \), a modal vector \( \vv{X}^{(i)} \in \mathbb{C}^n \) is associated, satisfying:
+\[
+\left[ \lambda_i^2 \boldsymbol{M} + \lambda_i \boldsymbol{C} + \boldsymbol{K} \right] \vv{X}^{(i)} = \vv{0}
+\]
+Given the symmetry of the system (typically \( \boldsymbol{M}, \boldsymbol{K} \) real and symmetric, \( \boldsymbol{C} \) symmetric or proportional), the eigenvalues occur in conjugate pairs and the modal vectors are also conjugate:
+\[
+\lambda_{2i-1} = \bar{\lambda}_{2i}, \quad
+\vv{X}^{(2i)} = \bar{\vv{X}}^{(2i-1)} \quad \text{for } i = 1, \dots, n
+\]
+Each modal vector \( \vv{X}^{(i)} \) can be written as:
+\[
+\vv{X}^{(i)} = 
+\begin{bmatrix}
+x_1^{(i)} \\
+x_2^{(i)} \\
+\vdots \\
+x_n^{(i)}
+\end{bmatrix}
+\]
+One common normalization strategy consists in choosing one component (e.g., \( x_1^{(i)} \)) to be 1, and expressing the rest as complex ratios:
+\[
+\mu_a^{(i)} = \frac{x_a^{(i)}}{x_1^{(i)}}
+\quad \Rightarrow \quad
+\vv{X}^{(i)} = x_1^{(i)}
+\begin{bmatrix}
+1 \\
+\mu_2^{(i)} \\
+\vdots \\
+\mu_n^{(i)}
+\end{bmatrix}
+\]
+Alternatively, one may normalize the modal vector so that its modal mass is unity:
+\[
+\vv{X}^{(i)\top} \boldsymbol{M} \vv{X}^{(i)} = 1
+\]
+The full general solution for the damped system is:
+\[
+\vv{x}(t) = \sum_{i=1}^{2n} a_i \vv{X}^{(i)} e^{\lambda_i t}
+\]
+Grouping the complex conjugate pairs:
+\[
+\vv{x}(t) = \sum_{i=1}^n e^{-\alpha_i t} \left( 
+    \vv{X}^{(i)} A_i \cos(\omega_{di} t) + \vv{X}^{(i)} B_i \sin(\omega_{di} t)
+\right)
+\]
+or, in amplitude-phase form:
+\[
+\vv{x}(t) = \sum_{i=1}^n e^{-\alpha_i t} \vv{X}^{(i)} C_i \cos(\omega_{di} t + \phi_i)
+\]
+
+\section{Forced Response}
+
+Now analyze the forced response of a linear system with \( n \) degrees of freedom subject to harmonic excitation:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{F}(t) = \vv{F_0} \cos(\Omega t)
+\]
+where:
+
+\begin{itemize}
+    \item \( \boldsymbol{M}, \boldsymbol{C}, \boldsymbol{K} \in \mathbb{R}^{n\times n} \) are the mass, damping, and stiffness matrices;
+    \item \( \vv{F_0} \in \mathbb{R}^n \) is the vector of force amplitudes;
+    \item \( \Omega \in \mathbb{R} \) is the excitation frequency.
+\end{itemize}
+
+The total response is composed of two parts:
+\[
+\vv{x}(t) = \vv{x}_h(t) + \vv{x_p}(t)
+\]
+where \( \vv{x}_h(t) \) is the homogeneous solution (free response), and \( \vv{x_p}(t) \) is the particular solution (steady-state forced response).
+
+\subsection{Undamped Case}
+
+Consider the undamped system:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{K} \vv{x} = \vv{F_0} \cos(\Omega t)
+\]
+Assume a particular solution of the form:
+\[
+\vv{x_p}(t) = \vv{X_0} \cos(\Omega t)
+\]
+Differentiating:
+\[
+\vv{\dot{x}_p}(t) = -\Omega \vv{X_0} \sin(\Omega t), \quad \vv{\ddot{x}_p}(t) = -\Omega^2 \vv{X_0} \cos(\Omega t)
+\]
+Substituting into the equation:
+\[
+-\Omega^2 \boldsymbol{M} \vv{X_0} \cos(\Omega t) + \boldsymbol{K} \vv{X_0} \cos(\Omega t) = \vv{F_0} \cos(\Omega t)
+\]
+Canceling the common factor:
+\[
+\left( -\Omega^2 \boldsymbol{M} + \boldsymbol{K} \right) \vv{X_0} = \vv{F_0}
+\]
+This gives the static amplification at frequency \( \Omega \):
+\[
+\vv{X_0} = \boldsymbol{H}(\Omega) \vv{F_0}, \quad \text{with } \boldsymbol{H}(\Omega) = \left( -\Omega^2 \boldsymbol{M} + \boldsymbol{K} \right)^{-1}
+\]
+The full steady-state response becomes:
+\[
+\vv{x_p}(t) = \boldsymbol{H}(\Omega) \vv{F_0} \cos(\Omega t)
+\]
+This is valid for all frequencies \( \Omega \notin \{\omega_i\} \), i.e., not at resonance.
+
+\subsection{Damped Case}
+
+Now consider the general case with damping:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{F_0} \cos(\Omega t)
+\]
+Assume a complex trial solution of the form:
+\[
+\vv{x_p}(t) = \Re\left\{ \vv{\tilde{X}} e^{j \Omega t} \right\}
+\]
+Then:
+\[
+\vv{\dot{x}_p}(t) = \Re\left\{ j \Omega \vv{\tilde{X}} e^{j \Omega t} \right\}, \quad
+\vv{\ddot{x}_p}(t) = \Re\left\{ -\Omega^2 \vv{\tilde{X}} e^{j \Omega t} \right\}
+\]
+Substituting into the equation yields:
+\[
+\left( -\Omega^2 \boldsymbol{M} + j \Omega \boldsymbol{C} + \boldsymbol{K} \right) \vv{\tilde{X}} = \vv{F_0}
+\]
+Define the dynamic stiffness matrix:
+\[
+\boldsymbol{D}(\Omega) = -\Omega^2 \boldsymbol{M} + j \Omega \boldsymbol{C} + \boldsymbol{K}
+\]
+Then:
+\[
+\vv{\tilde{X}} = \boldsymbol{D}^{-1}(\Omega) \vv{F_0} = \boldsymbol{H}(\Omega) \vv{F_0}
+\]
+and the real response is:
+\[
+\vv{x_p}(t) = \Re\left\{ \boldsymbol{H}(\Omega) \vv{F_0} e^{j \Omega t} \right\}
+\]
+Let:
+\[
+\vv{\tilde{X}} = \begin{bmatrix} \tilde{X}_1 \\ \tilde{X}_2 \\ \vdots \\ \tilde{X}_n \end{bmatrix}, \quad \tilde{X}_i = |\tilde{X}_i| e^{j \phi_i} \Rightarrow x_i(t) = |\tilde{X}_i| \cos(\Omega t + \phi_i)
+\]
+Therefore, the particular solution is:
+\[
+\vv{x_p}(t) =
+\begin{bmatrix}
+|\tilde{X}_1| \cos(\Omega t + \phi_1) \\
+|\tilde{X}_2| \cos(\Omega t + \phi_2) \\
+\vdots \\
+|\tilde{X}_n| \cos(\Omega t + \phi_n)
+\end{bmatrix}
+\]
+The complete response is:
+\[
+\vv{x}(t) = \vv{x}_h(t) + \vv{x_p}(t)
+\]
+where the homogeneous response \( \vv{x}_h(t) \) decays exponentially due to damping and is determined by the initial conditions.
+
+\section{Notation: Eigenvalues and Mode Shapes}
+
+Let us consider the solution of the undamped free vibration problem in coordinates. The general motion is a linear combination of mode shapes:
+\[
+\vv{x}(t) = \sum_{i=1}^n \left( A_i \cos(\omega_i t) + B_i \sin(\omega_i t) \right) \vv{X}^{(i)}
+\]
+where:
+\begin{itemize}
+    \item \( \omega_i \): natural frequency of the \( i \)-th mode;
+    \item \( \vv{X}^{(i)} \in \mathbb{R}^n \): eigenvector or mode shape corresponding to \( \omega_i \);
+    \item \( A_i, B_i \): scalar coefficients determined by initial conditions.
+\end{itemize}
+
+\paragraph{Component Notation and Modal Shapes} Each mode shape \( \vv{X}^{(i)} \) is a vector composed of the contributions of all generalized coordinates to the \( i \)-th mode:
+\[
+\vv{X}^{(i)} = 
+\begin{bmatrix}
+x_1^{(i)} \\
+x_2^{(i)} \\
+\vdots \\
+x_n^{(i)}
+\end{bmatrix}
+\]
+It is common to normalize each eigenvector by setting one specific component to 1, typically the first non-zero coordinate, and expressing the others as ratios with respect to it.
+
+\paragraph{Normalized Modal Coordinates} Let us denote the normalized \( i \)-th mode shape as:
+\[
+\vv{X}^{(i)} =
+\begin{bmatrix}
+1 \\
+\mu_2^{(i)} \\
+\mu_3^{(i)} \\
+\vdots \\
+\mu_n^{(i)}
+\end{bmatrix}
+\quad \text{or, more generally,} \quad
+\vv{X}^{(i)} =
+\begin{bmatrix}
+\mu_1^{(i)} \\
+\vdots \\
+1 \\
+\vdots \\
+\mu_n^{(i)}
+\end{bmatrix}
+\]
+depending on which component is chosen as the reference. The value 1 is arbitrarily imposed, and the \( \mu_a^{(i)} \) represents the relative participation of coordinate \( a \) in the \( i \)-th mode. This normalization is convenient for graphical representation and practical computation, although it does not yield unit modal mass. The actual scale of \( \vv{X}^{(i)} \) is irrelevant in the solution of the eigenvalue problem, as any scalar multiple is still a valid eigenvector.
+
+\paragraph{Orthogonality Conditions} Even with arbitrary normalization, the eigenvectors of the system satisfy the modal orthogonality conditions:
+\[
+\vv{X}^{(i)\top} \boldsymbol{M} \vv{X}^{(j)} = 0 \quad \text{for } i \neq j,
+\quad
+\vv{X}^{(i)\top} \boldsymbol{K} \vv{X}^{(j)} = 0 \quad \text{for } i \neq j
+\]
+That is, the mode shapes are mutually orthogonal with respect to both the mass and stiffness matrices, provided the system is undamped and symmetric. If one chooses to normalize by modal mass (unit modal mass normalization), the eigenvectors can be scaled accordingly:
+\[
+\vv{X}^{(i)}_{\text{normalized}} = \frac{1}{\sqrt{\vv{X}^{(i)\top} \boldsymbol{M} \vv{X}^{(i)}}}  \vv{X}^{(i)}
+\quad \Rightarrow \quad
+\vv{X}^{(i)\top}_{\text{normalized}} \boldsymbol{M} \vv{X}^{(i)}_{\text{normalized}} = 1
+\]
+
+\section{General Solution for a 3-DOF System}
+
+Let us consider the free vibration response of a 3-degree-of-freedom undamped system. The equation of motion is:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{K} \vv{x} = \vv{0}
+\]
+Assuming the solution as a linear combination of mode shapes:
+\[
+\vv{x}(t) = \sum_{i=1}^3 \left( A_i \cos(\omega_i t) + B_i \sin(\omega_i t) \right) \vv{X}^{(i)}
+\]
+The solution can be written in three equivalent forms:
+
+\paragraph{Form I (Complex Exponential Form):}
+\[
+\vv{x}(t) = \sum_{i=1}^3 \left( a_i  \vv{X}^{(i)}  e^{j \omega_i t} + \bar{a}_i  \vv{X}^{(i)}  e^{-j \omega_i t} \right)
+\]
+
+\paragraph{Form II (Real Trigonometric Form):}
+\[
+\vv{x}(t) = \sum_{i=1}^3 \vv{X}^{(i)} \left( A_i \cos(\omega_i t) + B_i \sin(\omega_i t) \right)
+\]
+
+\paragraph{Form III (Amplitude-Phase Form):}
+\[
+\vv{x}(t) = \sum_{i=1}^3 \vv{X}^{(i)}  C_i \cos(\omega_i t + \phi_i)
+\]
+where:
+\begin{itemize}
+    \item \( \vv{X}^{(i)} \in \mathbb{R}^3 \) are the mode shapes;
+    \item \( A_i, B_i \in \mathbb{R} \): coefficients to be determined from initial conditions;
+    \item \( C_i = \sqrt{A_i^2 + B_i^2} \), \( \phi_i = \arctan\left( \frac{B_i}{A_i} \right) \);
+    \item \( \omega_i \) are the natural frequencies.
+\end{itemize}
+
+Let the initial conditions be:
+\[
+\vv{x}(0) = \vv{x_0} =
+\begin{bmatrix}
+x_{10} \\
+x_{20} \\
+x_{30}
+\end{bmatrix}, \quad
+\vv{\dot{x}}(0) = \vv{v_0} =
+\begin{bmatrix}
+v_{10} \\
+v_{20} \\
+v_{30}
+\end{bmatrix}
+\]
+Then, evaluating the solution at \( t = 0 \):
+\[
+\vv{x}(0) = \sum_{i=1}^3 \vv{X}^{(i)} A_i = \boldsymbol{X} \vv{A}, \quad
+\vv{\dot{x}}(0) = \sum_{i=1}^3 \vv{X}^{(i)} \omega_i B_i = \boldsymbol{X}  \boldsymbol{\Omega} \vv{B}
+\]
+where:
+\[
+\boldsymbol{X} = \begin{bmatrix}
+\vv{X}^{(1)} & \vv{X}^{(2)} & \vv{X}^{(3)}
+\end{bmatrix}, \quad
+\boldsymbol{\Omega} = \text{diag}(\omega_1, \omega_2, \omega_3)
+\]
+The coefficients \( \vv{A}, \vv{B} \in \mathbb{R}^3 \) can be found by solving:
+\[
+\vv{A} = \boldsymbol{X}^{-1} \vv{x_0}, \quad \vv{B} = \boldsymbol{\Omega}^{-1} \boldsymbol{X}^{-1} \vv{v_0}
+\]
+Once \( A_i \) and \( B_i \) are known, the full time response can be written in any of the three forms above.
+
+\paragraph{Interpretation:}
+The vector \( \vv{X}^{(i)} \) expresses the relative participation of each degree of freedom in the \( i \)-th mode. For instance, it can be written:
+\[
+\vv{X}^{(1)} =
+\begin{bmatrix}
+1 \\
+\mu_2^{(1)} \\
+\mu_3^{(1)}
+\end{bmatrix}, \quad
+\vv{X}^{(2)} =
+\begin{bmatrix}
+\mu_1^{(2)} \\
+1 \\
+\mu_3^{(2)}
+\end{bmatrix}, \quad
+\vv{X}^{(3)} =
+\begin{bmatrix}
+\mu_1^{(3)} \\
+\mu_2^{(3)} \\
+1
+\end{bmatrix}
+\]
+where each \( \mu_j^{(i)} \in \mathbb{R} \) is a dimensionless ratio giving the amplitude of DOF \( j \) in mode \( i \), relative to the reference value set to 1. Let us now analyze the forced vibration response of the same 3-DOF system subject to harmonic excitation:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{F_0} \cos(\Omega t)
+\]
+where \( \vv{F_0} \in \mathbb{R}^3 \) is a constant force vector and \( \Omega \in \mathbb{R} \) is the excitation frequency. The aim is a steady-state particular solution of the form:
+\[
+\vv{x_p}(t) = \text{Re} \left\{ \vv{\tilde{x}_p} e^{j \Omega t} \right\}
+\]
+Substituting into the equation of motion, and defining the dynamic stiffness matrix:
+\[
+\boldsymbol{D}(\Omega) = -\Omega^2 \boldsymbol{M} + j \Omega \boldsymbol{C} + \boldsymbol{K}
+\]
+the equation becomes:
+\[
+\boldsymbol{D}(\Omega) \vv{\tilde{x}_p} = \vv{F_0}
+\]
+Solving this equation gives the complex vector of steady-state amplitudes:
+\[
+\vv{\tilde{x}_p} = \boldsymbol{H}(\Omega) \vv{F_0}, \quad \text{where } \boldsymbol{H}(\Omega) = \boldsymbol{D}(\Omega)^{-1}
+\]
+Each component of \( \vv{\tilde{x}_p} \) can be written as:
+\[
+\tilde{x}_{p,k}(t) = |H_k(\Omega)| \cdot F_{0,k} \cdot \cos(\Omega t + \phi_k)
+\]
+Therefore, the real solution is:
+\[
+\vv{x_p}(t) =
+\begin{bmatrix}
+|H_{11}| F_{01} \cos(\Omega t + \phi_{11}) + |H_{12}| F_{02} \cos(\Omega t + \phi_{12}) + |H_{13}| F_{03} \cos(\Omega t + \phi_{13}) \\
+|H_{21}| F_{01} \cos(\Omega t + \phi_{21}) + |H_{22}| F_{02} \cos(\Omega t + \phi_{22}) + |H_{23}| F_{03} \cos(\Omega t + \phi_{23}) \\
+|H_{31}| F_{01} \cos(\Omega t + \phi_{31}) + |H_{32}| F_{02} \cos(\Omega t + \phi_{32}) + |H_{33}| F_{03} \cos(\Omega t + \phi_{33})
+\end{bmatrix}
+\]
+where \( |H_{ij}| \) and \( \phi_{ij} \) are respectively the magnitude and phase of the \( (i,j) \)-th component of the FRF matrix \( \boldsymbol{H}(\Omega) \). The total response is given by:
+\[
+\vv{x}(t) = \vv{x}_h(t) + \vv{x_p}(t)
+\]
+where \( \vv{x}_h(t) \) is the free vibration component determined by the initial conditions, as discussed before.
+
+\paragraph{Remarks:} This solution holds for symmetric damping matrices \( \boldsymbol{C} \), i.e., the case where damping is not necessarily proportional, but does not introduce coupling in modal coordinates. 
+
+\section{Graphical Examples}
+
+The following plots illustrate various aspects of the dynamic behavior of N-DOF systems under free and forced vibration.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.98\linewidth]{00_Images/N_DOF/01.png}
+\caption{Free damped response of a 3-DOF system showing modal interactions and amplitude decay over time.}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.98\linewidth]{00_Images/N_DOF/02.png}
+\caption{Free damped response of a 3-DOF system exciting only one mode.}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.98\linewidth]{00_Images/N_DOF/03.png}
+\caption{Frequency Response Functions (FRFs) for each DOF: magnitude (blue) and phase (red), with clear resonance peaks and phase transitions near natural frequencies.}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.98\linewidth]{00_Images/N_DOF/04.png}
+\caption{Time response decomposition of forced vibration: total displacement (green), steady-state (red), and transient (blue).}
+\end{figure}

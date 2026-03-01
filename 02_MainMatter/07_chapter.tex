@@ -1,0 +1,342 @@
+%! TEX root = main.tex 
+
+\chapter{Nonlinear Systems and Linearization}
+
+\section{Introduction to Nonlinear Dynamics}
+
+In practical engineering, many mechanical systems exhibit nonlinear behavior due to physical phenomena such as friction, geometric constraints, or nonlinear restoring forces. A mechanical system is defined as nonlinear when its governing equations cannot be expressed as linear combinations of the state variables and their derivatives. The general form of a nonlinear second-order system is:
+\[
+\boldsymbol{M}(\vv{x}) \vv{\ddot{x}} + \boldsymbol{C}(\vv{x}, \vv{\dot{x}}) \vv{\dot{x}} + \boldsymbol{K}(\vv{x}) \vv{x} = \vv{F}(t)
+\]
+where the matrices \( \boldsymbol{M}, \boldsymbol{C}, \boldsymbol{K} \) are functions of the state variables \( \vv{x}, \vv{\dot{x}} \), and possibly of time. Nonlinear behavior may arise from several sources:
+\begin{itemize}
+  \item Geometric nonlinearity: large displacements alter the equilibrium geometry, causing stiffness matrices to depend on \( \vv{x} \).
+  \item Material nonlinearity: stress-strain relationships are not linear (e.g., plastic deformation).
+  \item Contact or constraint nonlinearity: due to intermittent contact, backlash, or conditional forces (e.g., stops or friction).
+  \item Actuator saturation or limiters: nonlinear force generation in real actuators or sensors.
+\end{itemize}
+
+These nonlinearities complicate both analytical and numerical solutions and often prevent the use of superposition or modal decomposition.
+
+\section{Resolution Approach}
+
+A general approach for modeling nonlinear systems involves the following steps:
+\begin{enumerate}
+  \item Write the equation of motion (EOM) for the nonlinear system.
+  \item Identify the static equilibrium configuration.
+  \item Linearize the EOM about the equilibrium point for small perturbations.
+\end{enumerate}
+
+\subsection{Equation of Motion for Nonlinear System}
+
+\paragraph{Nonlinear Kinetic} Let \( q \) be the generalized coordinate of a nonlinear 1-DOF system. The kinetic energy is given by:
+\[
+T = \sum_{i=1}^{N_B} \left( \frac{1}{2} m_i v_{G_i}^2 + \frac{1}{2} J_i \omega_i^2 \right)
+\]
+where each term depends nonlinearly on \( q \), because the velocities \( \dot{y}_{m_i} \) are functions of \( q \). One defines:
+\[
+\dot{y}_{m_i} = \frac{\partial y_{m_i}(q)}{\partial q} \cdot \dot{q} = \Delta_{m_i}(q) \cdot \dot{q}
+\]
+Thus, the kinetic energy becomes:
+\[
+T = \sum_{i=1}^{2N_B} \frac{1}{2} m_i^* \Delta_{m_i}^2(q) \cdot \dot{q}^2 = \frac{1}{2} m(q) \cdot \dot{q}^2
+\]
+where \( m(q) \) is the equivalent mass, depending on the configuration \( q \). 
+
+\paragraph{Dissipative Energies} Similarly, the total dissipation function is given by:
+\[
+D = \sum_{i=1}^{N_D} \frac{1}{2} c_i \dot{\Delta} \ell_{c_i}^2
+\]
+where \( \Delta \ell_{c_i} \) is the elongation of the \( i \)-th damper, which generally depends on the system’s configuration \( q \). Since dissipation is related to velocity, the elongation rate can be expressed as:
+\[
+\dot{\Delta \ell}_{c_i} = \frac{d}{dt} \left( \Delta \ell_{c_i}(q) \right) = \frac{\partial \Delta \ell_{c_i}}{\partial q} \cdot \dot{q} = \Delta_{c_i}(q) \cdot \dot{q}
+\]
+Substituting this into the expression for \( D \), the dissipation function becomes:
+\[
+D = \sum_{i=1}^{N_D} \frac{1}{2} c_i \left( \Delta_{c_i}(q) \cdot \dot{q} \right)^2
+= \sum_{i=1}^{N_D} \frac{1}{2} c_i \Delta_{c_i}^2(q) \cdot \dot{q}^2
+= \frac{1}{2} \left( \sum_{i=1}^{N_D} c_i \Delta_{c_i}^2(q) \right) \cdot \dot{q}^2 = \frac{1}{2} c(q) \cdot \dot{q}^2
+\]
+where: \( c(q) \) is defined as the equivalent damping, which generally varies with the configuration \( q \).
+
+\paragraph{Potential Energy} The potential energy includes both elastic and gravitational contributions:
+\[
+V(q) = V_{el}(q) + V_{grav}(q)
+\]
+\[
+V_{el} = \sum_{i=1}^{N_S} \frac{1}{2} k_i \Delta \ell_i^2(q), \quad V_{grav} = \sum_{j=1}^{N_B} m_j g h_j(q)
+\]
+In general, \( \Delta \ell_i(q) \) and \( h_j(q) \) are nonlinear functions of \( q \), and so is \( V(q) \), and in these cases the Jacobian cannot be used. 
+
+\paragraph{Generalized Forces} For external forces \( \vv{F_a} \), the virtual work is:
+\[
+\delta W = \sum_{i=1}^{N_F} \vv{F_i} \cdot \vv{\delta P_i} + \sum_{i=1}^{N_C} \vv{C_i} \cdot \vv{\delta \theta_i} = \sum_{i=1}^{N_F + N_C} F_i^* \cdot \delta y_{F_i^*}
+\]
+where \( \delta y_{F_i^*} \) is the virtual displacement or rotation of the \( i \)-th force or torque, which generally depends on the system’s configuration \( q \). it can be expressed as:
+\[
+\delta y_{F_i^*} = \frac{\partial y_{F_i^*}(q)}{\partial q} \cdot \delta q = \Delta_{F_i^*}(q) \cdot \delta q
+\]
+This defines the generalized force:
+\[
+Q(q,t) = \sum_{i=1}^{N_F + N_C} F_i^* \cdot \Delta_{F_i^*}(q)
+\]
+
+\paragraph{Nonlinear Equation of Motion}
+
+The dynamic behavior of a nonlinear system can be described using the Lagrange equation:
+\[
+\frac{d}{dt} \left( \frac{\partial T}{\partial \dot{q}} \right) - \frac{\partial T}{\partial q}
++ \frac{\partial D}{\partial \dot{q}} + \frac{\partial V}{\partial q} = Q(q,t)
+\]
+where \( T \) is the kinetic energy, \( D \) the dissipation function, \( V \) the potential energy, and \( Q(q,t) \) is the generalized force. Using the previously derived expressions, now compute each term:
+
+\begin{enumerate}
+    \item Kinetic energy, quadratic term:
+    \[
+    \frac{d}{dt} \left( \frac{\partial T}{\partial \dot{q}} \right) = \frac{d}{dt} \left( m(q) \dot{q} \right) = \frac{d m(q)}{d q} \dot{q}^2 + m(q) \ddot{q}
+    \]
+    \item Kinetic energy, linear term:
+    \[
+    \frac{\partial T}{\partial q} = \frac{\partial}{\partial q} \left( \frac{1}{2} m(q) \dot{q}^2 \right) = \frac{1}{2} \frac{d m(q)}{d q} \dot{q}^2
+    \]
+    \item Dissipative function:
+    \[
+    \frac{\partial D}{\partial \dot{q}} = \frac{\partial}{\partial \dot{q}} \left( \frac{1}{2} c(q) \dot{q}^2 \right) = c(q) \dot{q}
+    \]
+    \item Potential energy:
+    \[
+    \frac{\partial V}{\partial q} = f_V(q) \quad \text{(includes elastic and gravitational contributions)}
+    \]
+    \item External generalized force:
+    \[
+    Q(q,t) = \sum_{i=1}^{N_F + N_C} F_i^\star \cdot \Delta_{F_i}(q) \quad \text{with } \Delta_{F_i}(q) = \frac{\partial y_{F_i}}{\partial q}
+    \]
+\end{enumerate}
+
+Combining all terms, the nonlinear equation of motion becomes:
+\[
+m(q) \ddot{q} - \frac{1}{2} \frac{d m(q)}{d q} \dot{q}^2 + c(q) \dot{q} + f_V(q) = Q(q,t)
+\]
+This is the scalar nonlinear equation governing the dynamics of the system in terms of the generalized coordinate \( q \). It clearly shows the dependence of inertia, damping, and stiffness on the configuration \( q \), and the presence of velocity-squared terms that arise due to mass variation.
+
+\section{Static Equilibrium Position}
+
+In the absence of time-varying forces, a nonlinear system may admit one or more static equilibrium positions \( q_e \), characterized by the condition:
+\[
+\dot{q} = 0, \quad \ddot{q} = 0
+\]
+In this configuration, the generalized coordinate remains constant, and the system is at rest. According to the Theorem of Stationarity of the Potential Energy, the static equilibrium configuration corresponds to a local extremum (often a minimum) of the total potential energy:
+\[
+\left. \frac{\partial V(q)}{\partial q} \right|_{q = q_e} = 0
+\]
+This allows the equilibrium configuration to be found by minimizing \( V(q) \), taking into account both elastic and gravitational contributions.
+
+\section{Small Perturbation Theory}
+
+To study the system’s behavior near the equilibrium point \( q_e \), the generalized coordinate is expressed as:
+\[
+q(t) = q_e + q_p(t)
+\]
+where \( q_p(t) \) is a small perturbation. The goal is to expand all energy expressions in Taylor series around \( q_e \) and retain only quadratic terms.
+
+\paragraph{Kinetic Energy Expansion}
+
+The nonlinear kinetic energy of a generic 1-DOF system is expressed as:
+\[
+T(q, \dot{q}) = \frac{1}{2} m(q) \cdot \dot{q}^2
+\]
+To linearize around the static equilibrium position \( q_e \), define the perturbation variable:
+\[
+q_p = q - q_e , \quad \dot{q_p} = \dot{q} , \quad \ddot{q_p} = \ddot{q}
+\]
+A Taylor expansion of \( T(q, \dot{q}) \) around the point \( (q_e, \dot{q}_e = 0) \) yields:
+
+\begin{align*}
+T(q, \dot{q}) &\approx T(q_e, 0) + \left. \frac{\partial T}{\partial q} \right|_{q_e,0} (q - q_e) + \left. \frac{\partial T}{\partial \dot{q}} \right|_{q_e,0} \dot{q} \\
+&+ \frac{1}{2} \left. \frac{\partial^2 T}{\partial q^2} \right|_{q_e,0} (q - q_e)^2 
++ \frac{1}{2} \left. \frac{\partial^2 T}{\partial \dot{q}^2} \right|_{q_e,0} \dot{q}^2 
++ \left. \frac{\partial^2 T}{\partial q \partial \dot{q}} \right|_{q_e,0} (q - q_e)\dot{q}
+\end{align*}
+
+Now compute each term:
+
+\begin{itemize}
+    \item Zeroth-order term:
+    \[
+    T(q_e, 0) = \frac{1}{2} m(q_e) \cdot 0 = 0
+    \]
+    \item First-order derivatives:
+    \[ 
+    \left. \frac{\partial T}{\partial q} \right|_{q_e,0} = \left. \frac{1}{2} \frac{d m(q)}{d q} \cdot \dot{q}^2 \right|_{q_e,0} = 0
+    \]
+    \[
+    \left. \frac{\partial T}{\partial \dot{q}} \right|_{q_e,0} = \left. m(q) \cdot \dot{q} \right|_{q_e,0} = 0
+    \]
+    \item Second-order derivatives:
+    \[
+    \left. \frac{\partial^2 T}{\partial q^2} \right|_{q_e,0} = \left. \frac{1}{2} \frac{d^2 m}{d q^2} \cdot \dot{q}^2 \right|_{q_e,0} = 0
+    \]
+    \[
+    \left. \frac{\partial^2 T}{\partial \dot{q}^2} \right|_{q_e,0} = \left. m(q) \right|_{q_e} = m(q_e)
+    \]
+    \[
+    \left. \frac{\partial^2 T}{\partial q \partial \dot{q}} \right|_{q_e,0} = \left. \frac{d m}{d q} \cdot \dot{q} \right|_{q_e,0} = 0
+    \]
+\end{itemize}
+
+Substituting all terms, the only non-zero contribution to the kinetic energy expansion is:
+\[
+T(q, \dot{q}) \approx \frac{1}{2} m(q_e) \cdot \dot{q}^2 = \frac{1}{2} m(q_e) \cdot \dot{q_p}^2
+\]
+Recalling that the generalized mass is computed from the velocities of the bodies, for a multi-body system with translational and rotational motions:
+\[
+m(q_e) = \sum_{i=1}^{2N_B} m_i^* \left( \frac{\partial y_{m_i}}{\partial q} \right)^2 \Bigg|_{q_e}
+\]
+where \( y_{m_i}(q) \) is the position of the \( i \)-th mass center or rotation axis as a function of \( q \), and \( m_i^* \) is either \( m_i \) for translational mass or \( J_i \) for rotational inertia. The Jacobian \( \Delta_{m_i}(q) = \frac{d y_{m_i}}{d q} \) captures the nonlinear velocity mapping.
+
+\paragraph{Dissipation Function Expansion}
+
+The dissipation function \( D \) for a nonlinear 1-DOF system is typically written as:
+\[
+D(q, \dot{q}) = \frac{1}{2} c(q) \cdot \dot{q}^2
+\]
+To linearize it around a static equilibrium position \( q = q_e \), define the perturbation:
+\[
+q_p = q - q_e, \quad \dot{q}_p = \dot{q}
+\]
+Apply a second-order Taylor expansion of \( D(q, \dot{q}) \) around the point \( (q_e, \dot{q}_e = 0) \):
+
+\begin{align*}
+D(q, \dot{q}) &\approx D(q_e, 0)
++ \left. \frac{\partial D}{\partial q} \right|_{q_e,0} \cdot q_p
++ \left. \frac{\partial D}{\partial \dot{q}} \right|_{q_e,0} \cdot \dot{q}_p \\
+&\quad + \frac{1}{2} \left. \frac{\partial^2 D}{\partial q^2} \right|_{q_e,0} \cdot q_p^2
++ \frac{1}{2} \left. \frac{\partial^2 D}{\partial \dot{q}^2} \right|_{q_e,0} \cdot \dot{q}_p^2
++ \left. \frac{\partial^2 D}{\partial q \partial \dot{q}} \right|_{q_e,0} \cdot q_p \cdot \dot{q}_p
+\end{align*}
+
+Now compute all partial derivatives at \( (q_e, 0) \):
+
+\begin{itemize}
+    \item Zeroth-order:
+    \[
+    D(q_e, 0) = \frac{1}{2} c(q_e) \cdot 0 = 0
+    \]
+    \item First-order derivatives:
+    \[
+    \left. \frac{\partial D}{\partial q} \right|_{q_e,0}
+    = \left. \frac{1}{2} \frac{d c(q)}{d q} \cdot \dot{q}^2 \right|_{q_e,0} = 0
+    \quad
+    \]
+    \[
+    \left. \frac{\partial D}{\partial \dot{q}} \right|_{q_e,0}
+    = \left. c(q) \cdot \dot{q} \right|_{q_e,0} = 0
+    \]
+    \item Second-order derivatives:
+    \[
+    \left. \frac{\partial^2 D}{\partial q^2} \right|_{q_e,0}
+    = \left. \frac{1}{2} \frac{d^2 c}{d q^2} \cdot \dot{q}^2 \right|_{q_e,0} = 0
+    \]
+    \[
+    \left. \frac{\partial^2 D}{\partial \dot{q}^2} \right|_{q_e,0}
+    = \left. c(q) \right|_{q_e} = c(q_e)
+    \]
+    \[
+    \left. \frac{\partial^2 D}{\partial q \partial \dot{q}} \right|_{q_e,0}
+    = \left. \frac{d c}{d q} \cdot \dot{q} \right|_{q_e,0} = 0
+    \]
+\end{itemize}
+
+All terms vanish except the last one, leading to:
+\[
+D(q, \dot{q}) \approx \frac{1}{2} c(q_e) \cdot \dot{q}_p^2
+\]
+The equivalent damping coefficient is defined from the contributions of each damper as:
+\[
+c(q_e) = \sum_{i=1}^{N_D} c_i \left( \frac{d \Delta \ell_{c_i}(q)}{d q} \right)^2 \Bigg|_{q_e}
+= \sum_{i=1}^{N_D} c_i \Delta_{c_i}^2(q_e)
+\]
+where \( \Delta_{c_i}(q) \) is the elongation of the \( i \)-th damper expressed as a function of the generalized coordinate \( q \).
+
+\paragraph{Potential Energy Expansion}
+
+The total potential energy of a nonlinear mechanical system is given by:
+\[
+V(q) = \sum_{i=1}^{N_K} \frac{1}{2} k_i \Delta \ell_i^2(q) + \sum_{j=1}^{N_B} m_j g \cdot h_j(q)
+\]
+which includes elastic energy from springs and gravitational energy from masses. To linearize the potential energy around a static equilibrium point \( q = q_e \), define the perturbation:
+\[
+q_p = q - q_e
+\]
+Apply a second-order Taylor expansion:
+\[
+V(q) \approx V(q_e) + \left. \frac{\partial V}{\partial q} \right|_{q_e} \cdot q_p
++ \frac{1}{2} \left. \frac{\partial^2 V}{\partial q^2} \right|_{q_e} \cdot q_p^2
+\]
+Since \( q_e \) is an equilibrium position, it satisfies the stationarity of potential energy:
+\[
+\left. \frac{\partial V}{\partial q} \right|_{q_e} = 0
+\]
+Therefore, the expansion simplifies to:
+\[
+V(q) \approx V(q_e) + \frac{1}{2} \left. \frac{\partial^2 V}{\partial q^2} \right|_{q_e} \cdot q_p^2
+\]
+Let's compute the second derivative of \( V(q) \):
+\[
+\frac{\partial^2 V}{\partial q^2} =
+\sum_{i=1}^{N_K} \left[
+k_i \left( \underbrace{\left( \frac{\partial \Delta \ell_i}{\partial q} \right)^2}_{\text{Jacobian}^2}
++ \Delta \ell_i(q) \cdot \underbrace{\frac{\partial^2 \Delta \ell_i}{\partial q^2}}_{\text{Hessian}} \right)
+\right]
++ \sum_{j=1}^{N_B} m_j g \cdot \underbrace{\frac{\partial^2 h_j}{\partial q^2}}_{\text{Hessian}}
+\]
+Evaluated at the equilibrium point, it is found:
+\[
+k(q_e) =
+\sum_{i=1}^{N_K} \left[ \underbrace{k_i
+\left( \left. \frac{\partial \Delta \ell_i}{\partial q} \right|_{q_e} \right)^2}_{\text{First order stiffness}}
++ \underbrace{\left. k_i \cdot \Delta \ell_i(q) \cdot \frac{\partial^2 \Delta \ell_i}{\partial q^2} \right|_{q_e}}_{\text{Second order stiffness}}
+\right]
++ \sum_{j=1}^{N_B} \underbrace{m_j g \cdot \left. \frac{\partial^2 h_j}{\partial q^2} \right|_{q_e}}_{\text{First order stiffness}}
+\]
+\begin{itemize}
+    \item The first term, with the squared Jacobian \( \left( \partial \Delta \ell_i / \partial q \right)^2 \), corresponds to the linear (first-order) stiffness contribution.
+    \item The second-order terms (involving the Hessians of \( \Delta \ell_i \) and \( h_j \)) are purely nonlinear contributions. These terms can be negative and potentially lead to instability, corresponding to local loss of stiffness.
+\end{itemize}
+
+Hence, the final linearized expression for the potential energy becomes:
+\[
+V(q) \approx V(q_e) + \frac{1}{2} k(q_e) \cdot \dot{q}_p^2
+\]
+
+\paragraph{Generalized Forces}
+
+In Lagrangian mechanics, the contribution of external forces to the equations of motion is represented by the generalized force \( Q(q, t) \), defined as:
+\[
+Q(q,t) = \sum_{i=1}^{N_F + N_C} F_i^\star \cdot \Delta_{F_i}(q) \quad \text{with } \Delta_{F_i}(q) = \frac{\partial y_{F_i}}{\partial q}
+\]
+This leads to the expression of the virtual work as:
+\[
+\delta W = Q(q, t) \cdot \delta q
+\]
+To linearize \( Q(q, t) \) around an equilibrium point \( q = q_e \), perform a first-order Taylor expansion:
+\[
+Q(q, t) \approx Q(q_e, t) + \left. \frac{\partial Q}{\partial q} \right|_{q_e} \cdot q_p
+\]
+Here:
+\[
+Q(q_e, t) = \sum_{i=1}^{N_F + N_C} F_i^*(t) \cdot \left. \frac{\partial y_{F_i^*}}{\partial q} \right|_{q_e}
+\]
+The term \( \partial Q / \partial q \) introduces a configuration-dependent modification of the excitation force, which is typically neglected in weakly nonlinear systems. Therefore, in many practical situations, the external generalized force is approximated as:
+\[
+Q(q, t) \approx Q(q_e, t)
+\]
+meaning it is treated as independent of \( q \) in the linearized model.
+
+\subsection{Linearized Equation of Motion}
+
+By substituting the quadratic approximations of all energy terms and the generalized force into the Lagrange equation, the following linearized model is obtained:
+\[
+m(q_e) \cdot \ddot{q}_p + c(q_e) \cdot \dot{q}_p + k(q_e) \cdot q_p = Q(q_e, t)
+\]
+This is a second-order linear ordinary differential equation with constant coefficients, valid in the vicinity of the equilibrium point \( q_e \). The equation is expressed in terms of the perturbation variable \( q_p = q - q_e \), which describes small deviations from the equilibrium configuration. Each coefficient in this equation has a clear physical interpretation. The resulting linearized model enables the use of classical vibration analysis techniques.

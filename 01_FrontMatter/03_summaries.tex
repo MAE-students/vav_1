@@ -1,0 +1,49 @@
+%! TEX root = main.tex  % Specifies the main document file for multi-file projects
+
+% Rename default list and caption names for consistency
+\renewcommand{\contentsname}{Summary}  % Renames "Table of Contents"
+\renewcommand{\listfigurename}{Figures List}  % Renames "List of Figures"
+\renewcommand{\listtablename}{Tabs List}  % Renames "List of Tables"
+\renewcommand{\lstlistingname}{Cell}  % Renames "Listing" for code blocks
+\renewcommand{\lstlistlistingname}{Cells List}  % Renames "List of Listings"
+\renewcommand{\listalgorithmname}{Algorithms List}  % Renames "List of Algorithms"
+\def\listacronymname{Acronym List}  % Defines the name for the acronym list
+\renewcommand{\bibname}{References}   % Defines the name for bibliography
+\def\acknowledgmentsname{Acknowledges}  % Defines the name for acknowledgments
+
+% Generate Table of Contents and add it to the document
+\phantomsection  % Ensures correct hyperlinking
+\tableofcontents
+\newpage
+
+% Generate List of Figures and add it to the Table of Contents
+%\phantomsection  
+%\addcontentsline{toc}{chapter}{\listfigurename}
+%\listoffigures
+%\newpage 
+
+% The following sections can be enabled if needed by uncommenting them
+
+% Generate List of Tables and add it to the Table of Contents
+%\phantomsection
+%\addcontentsline{toc}{chapter}{\listtablename}
+%\listoftables
+%\newpage
+
+% Generate List of Algorithms and add it to the Table of Contents
+%\phantomsection
+%\addcontentsline{toc}{chapter}{\listalgorithmname}
+%\listofalgorithms
+%\newpage
+
+% Generate List of Code Listings and add it to the Table of Contents
+%\phantomsection  
+%\addcontentsline{toc}{chapter}{\lstlistlistingname}
+%\lstlistoflistings
+%\newpage   
+
+% Generate Acronym List and add it to the Table of Contents
+%\phantomsection
+%\addcontentsline{toc}{chapter}{\listacronymname}
+%\input{01_FrontMatter/04_acronym}
+%\newpage

@@ -1,0 +1,558 @@
+%! TEX root = main.tex 
+
+\chapter{Modal Approach}
+
+\section{Modal Matrices Derivation}
+
+In the analysis of linear mechanical systems with \( n \) degrees of freedom, it is often convenient to transform the governing equations into a set of uncoupled scalar equations by using the so-called modal coordinates. This transformation, based on the eigenstructure of the undamped system, leads to a diagonalization of the mass, damping and stiffness matrices, thereby simplifying the analysis and solution of the equations of motion. Let the physical coordinates be denoted by \( \vv{x}(t) \in \mathbb{R}^n \), and define the modal coordinates \( \vv{q}(t) \in \mathbb{R}^n \) through the linear transformation:
+\[
+\vv{x}(t) = \boldsymbol{\Phi} \vv{q}(t)
+\]
+where \( \boldsymbol{\Phi} \in \mathbb{R}^{n \times n} \) is the matrix whose columns are the mode shapes of the undamped system:
+\[
+\boldsymbol{\Phi} = \left[ \vv{X}^{(1)}, \vv{X}^{(2)}, \cdots, \vv{X}^{(n)} \right]
+\]
+The matrix \( \boldsymbol{\Phi} \) is assumed to be invertible (i.e., the mode shapes are linearly independent) and defines a bijective transformation from physical to modal coordinates. Differentiating the coordinate transformation yields:
+\[
+\vv{\dot{x}} = \boldsymbol{\Phi} \vv{\dot{q}}, \quad
+\vv{\ddot{x}} = \boldsymbol{\Phi} \vv{\ddot{q}}
+\]
+
+\subsection{Modal Mass Matrix}
+
+Starting from the kinetic energy:
+\[
+T = \frac{1}{2} \vv{\dot{x}}^\top \boldsymbol{M} \vv{\dot{x}} = \frac{1}{2} \vv{\dot{q}}^\top \boldsymbol{\Phi}^\top \boldsymbol{M} \boldsymbol{\Phi} \vv{\dot{q}} = \frac{1}{2} \vv{\dot{q}}^\top \boldsymbol{M_q} \vv{\dot{q}}
+\]
+This expression identifies the modal mass matrix as:
+\[
+\boldsymbol{M_q} = \boldsymbol{\Phi}^\top \boldsymbol{M} \boldsymbol{\Phi}
+\]
+
+\subsection{Modal Damping Matrix}
+
+Similarly, for the Rayleigh dissipation function:
+\[
+D = \frac{1}{2} \vv{\dot{x}}^\top \boldsymbol{C} \vv{\dot{x}} = \frac{1}{2} \vv{\dot{q}}^\top \boldsymbol{\Phi}^\top \boldsymbol{C} \boldsymbol{\Phi} \vv{\dot{q}} = \frac{1}{2} \vv{\dot{q}}^\top \boldsymbol{C_q} \vv{\dot{q}}
+\]
+The modal damping matrix is then defined as:
+\[
+\boldsymbol{C_q} = \boldsymbol{\Phi}^\top \boldsymbol{C} \boldsymbol{\Phi}
+\]
+
+\subsection{Modal Stiffness Matrix}
+
+From the expression of the elastic potential energy:
+\[
+V = \frac{1}{2} \vv{x}^\top \boldsymbol{K} \vv{x} = \frac{1}{2} \vv{q}^\top \boldsymbol{\Phi}^\top \boldsymbol{K} \boldsymbol{\Phi} \vv{q} = \frac{1}{2} \vv{q}^\top \boldsymbol{K_q} \vv{q}
+\]
+This leads to the modal stiffness matrix:
+\[
+\boldsymbol{K_q} = \boldsymbol{\Phi}^\top \boldsymbol{K} \boldsymbol{\Phi}
+\]
+
+\subsection{External Forces and Generalized Forces}
+
+Given that the virtual work is expressed as:
+\[
+\delta W = \vv{Q_x}^\top \vv{\delta x} = \vv{Q_x}^\top \boldsymbol{\Phi} \vv{\delta q} = \left( \boldsymbol{\Phi}^\top \vv{Q_x} \right)^\top \vv{\delta q} = \vv{Q_q}^\top \vv{\delta q}
+\]
+Identify the generalized force vector in modal coordinates as:
+\[
+\vv{Q_q} = \boldsymbol{\Phi}^\top \vv{Q_x}
+\]
+This transformation maps the physical external forces to equivalent modal forces.
+
+\subsection{Lagrange Equation in Modal Coordinates}
+
+Using all the derived modal matrices, the equations of motion in modal coordinates become:
+\[
+\boldsymbol{M_q} \vv{\ddot{q}} + \boldsymbol{C_q} \vv{\dot{q}} + \boldsymbol{K_q} \vv{q} = \vv{Q_q}
+\]
+
+\section{How are Modal Matrices?}
+
+\subsection{Modal Mass Matrix and Modal Stiffness Matrix}
+
+In order to understand the structure of the modal mass and stiffness matrices, it is essential to revisit the eigenvalue problem associated with the undamped equations of motion:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{K} \vv{x} = \vv{0}
+\quad \Rightarrow \quad
+\left[ \lambda^2 \boldsymbol{M} + \boldsymbol{K} \right] \vv{X}^{(i)} = \vv{0}
+\]
+Assuming a solution of the form \( \vv{x}(t) = \vv{X}^{(i)} e^{\lambda t} \), and setting \( \lambda = \pm j \omega_i \), the classical eigenvalue problem is obtained:
+\[
+\left[ \boldsymbol{K} - \omega_i^2 \boldsymbol{M} \right] \vv{X}^{(i)} = \vv{0}
+\]
+This leads to \( n \) pairs of eigenvalues \( \omega_i^2 \in \mathbb{R}^+ \), and corresponding eigenvectors \( \vv{X}^{(i)} \in \mathbb{R}^n \), representing the natural frequencies and mode shapes of the system. Let us consider two solutions \( \vv{X}^{(r)} \) and \( \vv{X}^{(s)} \) associated with two natural frequencies \( \omega_r \) and \( \omega_s \). Multiplying the two eigenvalue equations on the left and right by the transposed other eigenvectors yields:
+\[
+\left\{
+\begin{aligned}
+\left[\boldsymbol{K}-\omega_r^2 \boldsymbol{M} \right] \vv{X}^{(r)} &= 0 \\
+\left[\boldsymbol{K}-\omega_s^2 \boldsymbol{M} \right] \vv{X}^{(s)} &= 0
+\end{aligned}
+\right.
+\quad \Rightarrow \quad
+\left\{
+\begin{aligned}
+\omega_r^2 \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} &= \vv{X}^{(s)\top} \boldsymbol{K} \vv{X}^{(r)} \\
+\omega_s^2 \vv{X}^{(r)\top} \boldsymbol{M} \vv{X}^{(s)} &= \vv{X}^{(r)\top} \boldsymbol{K} \vv{X}^{(s)}
+\end{aligned}
+\right.
+\]
+Considering only the second equation and transpose it:
+\[
+\Rightarrow \quad
+\left\{
+\begin{aligned}
+\omega_r^2 \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} &= \vv{X}^{(s)\top} \boldsymbol{K} \vv{X}^{(r)} \\
+\left[ \omega_s^2 \vv{X}^{(r)\top} \boldsymbol{M} \vv{X}^{(s)} \right]^{\top} &= \left[ \vv{X}^{(r)\top} \boldsymbol{K} \vv{X}^{(s)} \right]^\top
+\end{aligned}
+\right.
+\quad \Rightarrow \quad
+\left\{
+\begin{aligned}
+\omega_r^2 \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} &= \vv{X}^{(s)\top} \boldsymbol{K} \vv{X}^{(r)} \\
+\omega_s^2 \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} &= \vv{X}^{(s)\top} \boldsymbol{K} \vv{X}^{(r)}
+\end{aligned}
+\right.
+\]
+Subtracting one equation from the other yields:
+\[
+(\omega_r^2 - \omega_s^2) \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} = 0
+\]
+If \( \omega_r^2 \neq \omega_s^2 \) (i.e., \( r \neq s \), distinct modes), then the only way the product vanishes is if:
+\[
+\vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} = 0
+\]
+If \( \omega_r^2 = \omega_s^2 \) (i.e., \( r = s \), repeated or same mode), then \( \omega_r^2 - \omega_s^2 = 0 \), and thus no constraint applies to \( \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} \), which can be non-zero:
+\[
+\vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} \neq 0 \quad \text{in general}
+\]
+But remember that \( r = s \) so, in this case, the scalar \( \vv{X}^{(r)\top} \boldsymbol{M} \vv{X}^{(r)} \) is known as the generalized mass of mode \( r \), and is denoted \( m_{qr} \) (or equivalently with \( s \)). Thus, in summary:
+\[
+\vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} =
+\begin{cases}
+0 & \text{if } r \neq s \Rightarrow \omega_r \neq \omega_s \\
+m_{qr} & \text{if } r = s \Rightarrow \omega_r = \omega_s
+\end{cases}
+\]
+A similar argument applies to the stiffness matrix \( \boldsymbol{K} \). Using the identity:
+\[
+\vv{X}^{(s)\top} \boldsymbol{K} \vv{X}^{(r)} = \omega_r^2 \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)}
+\]
+it follows that, when \( r \neq s \), if \( \vv{X}^{(s)\top} \boldsymbol{M} \vv{X}^{(r)} = 0 \), then also:
+\[
+\vv{X}^{(s)\top} \boldsymbol{K} \vv{X}^{(r)} = 0
+\]
+while, when \( r = s \), due to \( \vv{X}^{(r)\top} \boldsymbol{M} \vv{X}^{(r)} \neq 0 \), then also:
+\[
+\vv{X}^{(r)\top} \boldsymbol{K} \vv{X}^{(r)} \neq 0
+\]
+Hence:
+\[
+\vv{X}^{(s)\top} \boldsymbol{K} \vv{X}^{(r)} =
+\begin{cases}
+0 & \text{if } r \neq s,\ \omega_r \neq \omega_s \\
+k_{qr} & \text{if } r = s,\ \omega_r = \omega_s
+\end{cases}
+\]
+These relations explain that the modal matrices are diagonal:
+\[
+\boldsymbol{M_q} = \boldsymbol{\Phi}^\top \boldsymbol{M} \boldsymbol{\Phi}
+= \begin{bmatrix}
+m_{q_1} & 0 & \cdots & 0 \\
+0 & m_{q_2} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & m_{q_n}
+\end{bmatrix}, \quad
+\boldsymbol{K_q} = \boldsymbol{\Phi}^\top \boldsymbol{K} \boldsymbol{\Phi}
+= \begin{bmatrix}
+k_{q_1} & 0 & \cdots & 0 \\
+0 & k_{q_2} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & k_{q_n}
+\end{bmatrix}
+\]
+where each diagonal element is a generalized mass or stiffness associated with the corresponding mode:
+\[
+m_{q_r} = \vv{X}^{(r)\top} \boldsymbol{M} \vv{X}^{(r)}, \quad
+k_{q_r} = \vv{X}^{(r)\top} \boldsymbol{K} \vv{X}^{(r)}
+\]
+
+\subsection{Damping Matrix}
+
+In general, the damping matrix in modal coordinates is:
+\[
+\boldsymbol{C_q} = \boldsymbol{\Phi}^\top \boldsymbol{C} \boldsymbol{\Phi}
+\]
+and is not diagonal if \( \boldsymbol{C} \) is arbitrary. This implies that modal equations remain coupled in the presence of generic damping. A widely used approximation is Rayleigh (or structural) damping, where the damping matrix is assumed proportional to mass and stiffness:
+\[
+\boldsymbol{C} = \alpha \boldsymbol{M} + \beta \boldsymbol{K}
+\]
+Substituting into the modal damping matrix:
+\[
+\boldsymbol{C_q} = \boldsymbol{\Phi}^\top (\alpha \boldsymbol{M} + \beta \boldsymbol{K}) \boldsymbol{\Phi}
+= \alpha \boldsymbol{M_q} + \beta \boldsymbol{K_q}
+\]
+Since \( \boldsymbol{M_q} \) and \( \boldsymbol{K_q} \) are diagonal, \( \boldsymbol{C_q} \) is also diagonal under this assumption. The damping ratio \( h_r \) for the \( r \)-th mode can then be expressed as:
+\[
+h_r = \frac{c_{q_r}}{2 m_{q_r} \omega_r}
+= \frac{1}{2 \omega_r} (\alpha + \beta \omega_r^2)
+\]
+
+\paragraph{Estimation of \( \alpha \) and \( \beta \)}
+
+The parameters \( \alpha \) and \( \beta \) can be identified in two main ways:
+\begin{itemize}
+  \item Through experimental modal analysis (if the structure already exists);
+  \item By matching modal damping ratios in known or similar structures.
+\end{itemize}
+
+If the modal damping values \( h_r \) for two modes are known, one can solve the system:
+\[
+\begin{cases}
+2 h_1 \omega_1 = \alpha + \beta \omega_1^2 \\
+2 h_2 \omega_2 = \alpha + \beta \omega_2^2
+\end{cases}
+\Rightarrow
+\begin{bmatrix}
+1 & \omega_1^2 \\
+1 & \omega_2^2
+\end{bmatrix}
+\begin{bmatrix}
+\alpha \\
+\beta
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 h_1 \omega_1 \\
+2 h_2 \omega_2
+\end{bmatrix}
+\]
+Alternatively, for systems with more than two modes, a least squares method can be applied to estimate the best fitting values of \( \alpha \) and \( \beta \).
+
+Let us denote:
+\begin{itemize}
+    \item \( c_{q,ii} \): the diagonal entry of the modal damping matrix corresponding to the \( i \)-th mode;
+    \item \( m_{q,ii} \): modal mass of the \( i \)-th mode;
+    \item \( k_{q,ii} \): modal stiffness of the \( i \)-th mode.
+\end{itemize}
+
+For each mode \( i \), the Rayleigh formula yields:
+\[
+c_{q,ii} = \alpha m_{q,ii} + \beta k_{q,ii}
+\]
+Writing this relation for \( N \geq 2 \) modes, the following overdetermined linear system is obtained:
+\[
+\begin{bmatrix}
+m_{q,11} & k_{q,11} \\
+m_{q,22} & k_{q,22} \\
+\vdots & \vdots \\
+m_{q,NN} & k_{q,NN}
+\end{bmatrix}
+\begin{bmatrix}
+\alpha \\
+\beta
+\end{bmatrix}
+=
+\begin{bmatrix}
+c_{q,11} \\
+c_{q,22} \\
+\vdots \\
+c_{q,NN}
+\end{bmatrix}
+\]
+or more compactly:
+\[
+\boldsymbol{A}
+\begin{bmatrix}
+\alpha \\
+\beta
+\end{bmatrix}
+= \vv{c}
+\]
+where \( \boldsymbol{A} \in \mathbb{R}^{N \times 2} \) and \( \vv{c} \in \mathbb{R}^{N} \). The least squares solution that minimizes the error in the 2-norm is:
+\[
+\begin{bmatrix}
+\alpha \\
+\beta
+\end{bmatrix}
+=
+\left( \boldsymbol{A}^\top \boldsymbol{A} \right)^{-1} \boldsymbol{A}^\top \vv{c}
+\]
+This approach provides an optimal approximation of \( \alpha \) and \( \beta \) in the least-squares sense, especially useful when the modal damping ratios are experimentally known for more than two modes.
+
+\section{Principle of Orthogonality}
+
+The modal transformation \( \vv{x} = \boldsymbol{\Phi} \vv{q} \) diagonalizes the mass and stiffness matrices under certain orthogonality conditions between the mode shapes. However, the matrix \( \boldsymbol{\Phi} \) is not in general orthogonal in the strict or broad sense. Specifically:
+\[
+\boldsymbol{\Phi}^\top \boldsymbol{\Phi} \neq \boldsymbol{I}, \quad \boldsymbol{\Phi}^\top \boldsymbol{M} \boldsymbol{\Phi} \neq \boldsymbol{I}
+\]
+Thus, the values of the generalized masses \( m_{q_{ii}} \) and stiffnesses \( k_{q_{ii}} \) depend on the normalization chosen for each mode \( \vv{X}^{(i)} \). One common normalization is the so-called mass normalization, in which each mode shape is scaled so that:
+\[
+\vv{X}^{(i)\top} \boldsymbol{M} \vv{X}^{(i)} = m_{q_{ii}} \quad \Rightarrow \quad \vv{\tilde{X}}^{(i)} = \frac{1}{\sqrt{m_{q_{ii}}}} \vv{X}^{(i)}
+\]
+With this scaling, the normalized mode satisfies:
+\[
+\vv{\tilde{X}}^{(i)\top} \boldsymbol{M} \vv{\tilde{X}}^{(i)} = 1
+\]
+and, as a consequence, the diagonal elements of the modal stiffness matrix become:
+\[
+k_{q_{ii}} = \omega_i^2 m_{q_{ii}} \quad \Rightarrow \quad
+k_{q_{ii}} = \omega_i^2 \quad \text{if } m_{q_{ii}} = 1
+\]
+Thus, under this normalization, the modal equations become:
+\[
+\boldsymbol{I}  \vv{\ddot{q}} + \operatorname{diag}(\omega_i^2) \vv{q} = \vv{Q_q}
+\quad \text{with} \quad
+\vv{Q_q} = \boldsymbol{\Sigma}^\top \vv{Q_x}
+\]
+where \( \boldsymbol{\Sigma} = [\vv{\tilde{X}}^{(1)}, \vv{\tilde{X}}^{(2)}, \dots, \vv{\tilde{X}}^{(n)}] \) is the matrix of normalized mode shapes. The equations of motion then reduce to \( n \) uncoupled scalar differential equations:
+\[
+\begin{cases}
+\ddot{q}_1 + \omega_1^2 q_1 = Q_{q_1} \\
+\ddot{q}_2 + \omega_2^2 q_2 = Q_{q_2} \\
+\vdots \\
+\ddot{q}_n + \omega_n^2 q_n = Q_{q_n}
+\end{cases}
+\]
+Each equation governs the evolution of a single mode, driven by the corresponding modal force component. This decoupled structure allows the system to be solved independently for each modal coordinate.
+
+\section{General Procedure for the Resolution of N-DOF Systems}
+
+The complete solution of a linear mechanical system with \( n \) degrees of freedom and proportional damping can be carried out by systematically transforming the equations of motion into modal coordinates, solving the resulting decoupled scalar problems, and finally reconstructing the response in physical coordinates. Starting from the second-order vector differential equation:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{F_x}
+\]
+Introduce the modal transformation:
+\[
+\vv{x}(t) = \boldsymbol{\Phi} \vv{q}(t)
+\]
+Then, using the precomputed modal matrices:
+\[
+\boldsymbol{M_q} = \boldsymbol{\Phi}^\top \boldsymbol{M} \boldsymbol{\Phi}, \quad
+\boldsymbol{C_q} = \boldsymbol{\Phi}^\top \boldsymbol{C} \boldsymbol{\Phi}, \quad
+\boldsymbol{K_q} = \boldsymbol{\Phi}^\top \boldsymbol{K} \boldsymbol{\Phi}, \quad
+\vv{F_q} = \boldsymbol{\Phi}^\top \vv{F_x}
+\]
+the equations of motion in modal coordinates become:
+\[
+\boldsymbol{M_q} \vv{\ddot{q}} + \boldsymbol{C_q} \vv{\dot{q}} + \boldsymbol{K_q} \vv{q} = \vv{F_q}
+\]
+Since the modal matrices are diagonal (in the case of proportional damping), the system decouples into \( n \) independent scalar equations:
+\[
+m_{q_i} \ddot{q}_i + c_{q_i} \dot{q}_i + k_{q_i} q_i = F_{q_i}, \quad \text{for } i = 1, 2, \dots, n
+\]
+
+\paragraph{Solution Steps:}
+
+\begin{enumerate}
+  \item Obtain the system equations in physical coordinates:
+  \[
+  \boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{F_x}
+  \]  
+  \item Compute natural frequencies and mode shapes (eigenvalue problem of the undamped system):
+  \[
+  \left[ \boldsymbol{K} - \omega_i^2 \boldsymbol{M} \right] \vv{X}^{(i)} = \vv{0}, \quad i = 1,\dots,n
+  \]
+  \[
+  \boldsymbol{\Phi} = \left[ \vv{X}^{(1)}, \dots, \vv{X}^{(n)} \right]
+  \]
+  \item Diagonalize the mass, stiffness and damping matrices using \( \boldsymbol{\Phi} \). This yields \( n \) uncoupled equations.
+  \item Solve each scalar second-order differential equation independently for the modal coordinates \( q_i(t) \).
+  \item Reconstruct the total response in physical coordinates via modal superposition:
+  \[
+  \vv{x}(t) = \sum_{i=1}^n \vv{X}^{(i)} q_i(t)
+  \]
+\end{enumerate}
+
+The initial conditions in modal coordinates are obtained from:
+\[
+\vv{x}(0) = \boldsymbol{\Phi} \vv{q}(0) \Rightarrow \vv{q_0} = \boldsymbol{\Phi}^{-1} \vv{x_0}
+\]
+\[
+\vv{\dot{x}}(0) = \boldsymbol{\Phi} \vv{\dot{q}}(0) \Rightarrow \vv{\dot{q}_0} = \boldsymbol{\Phi}^{-1} \vv{v_0}
+\]
+The generalized force is:
+\[
+\vv{F_q}(t) = \boldsymbol{\Phi}^\top \vv{F_x}(t)
+\]
+
+Assume harmonic excitation:
+\[
+F_{q_i}(t) = F_{q0_i} \cos(\omega t)
+\]
+Then the particular solution (steady-state) is:
+\[
+q_i(t) = |\hat{q}_{0i}| \cos(\omega t + \phi_i), \quad
+\hat{q}_{0i} = \frac{F_{q0_i}}{k_{q_i} - m_{q_i} \omega^2 + j \omega c_{q_i}}
+\]
+The full response of the \( i \)-th modal coordinate is:
+\[
+q_i(t) = e^{-h_i \omega_i t} \left[ A_i \cos(\omega_{d,i} t) + B_i \sin(\omega_{d,i} t) \right]
++ |\hat{q}_{0i}| \cos(\omega t + \phi_i)
+\]
+
+\section{Modal Frequency Response Function}
+
+\subsection{Relationship Between Modal and Physical FRFs}
+
+Consider the forced vibration problem of a damped MDOF system with harmonic excitation:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{F_x}(t)
+\]
+Assuming harmonic excitation and response:
+\[
+\vv{F_x}(t) = \vv{\tilde{F}_x} e^{j \Omega t}, \quad \vv{x}(t) = \vv{\tilde{X}} e^{j \Omega t}
+\]
+Substituting into the equation of motion yields:
+\[
+\left( -\Omega^2 \boldsymbol{M} + j \Omega \boldsymbol{C} + \boldsymbol{K} \right) \vv{\tilde{X}} = \vv{\tilde{F}_x}
+\]
+The matrix:
+\[
+\boldsymbol{H}(\Omega) = \left[ -\Omega^2 \boldsymbol{M} + j \Omega \boldsymbol{C} + \boldsymbol{K} \right]^{-1}
+\]
+is the system's FRF in physical coordinates, such that:
+\[
+\vv{\tilde{X}} = \boldsymbol{H}(\Omega) \vv{\tilde{F}_x}
+\]
+Transforming to modal coordinates:
+\[
+\vv{x} = \boldsymbol{\Phi} \vv{q}, \quad \vv{\dot{x}} = \boldsymbol{\Phi} \vv{\dot{q}}, \quad \vv{\ddot{x}} = \boldsymbol{\Phi} \vv{\ddot{q}}
+\]
+Substituting into the physical equation:
+\[
+\boldsymbol{M} \boldsymbol{\Phi} \vv{\ddot{q}} + \boldsymbol{C} \boldsymbol{\Phi} \vv{\dot{q}} + \boldsymbol{K} \boldsymbol{\Phi} \vv{q} = \vv{F_x}(t)
+\]
+Multiplying on the left by \( \boldsymbol{\Phi}^\top \), and using the modal matrices:
+\[
+\boldsymbol{M_q} = \boldsymbol{\Phi}^\top \boldsymbol{M} \boldsymbol{\Phi}, \quad
+\boldsymbol{C_q} = \boldsymbol{\Phi}^\top \boldsymbol{C} \boldsymbol{\Phi}, \quad
+\boldsymbol{K_q} = \boldsymbol{\Phi}^\top \boldsymbol{K} \boldsymbol{\Phi}, \quad
+\vv{F_q} = \boldsymbol{\Phi}^\top \vv{F_x}
+\]
+the modal equation is obtained:
+\[
+\boldsymbol{M_q} \vv{\ddot{q}} + \boldsymbol{C_q} \vv{\dot{q}} + \boldsymbol{K_q} \vv{q} = \vv{F_q}(t)
+\]
+Assuming harmonic response:
+\[
+\vv{q}(t) = \vv{\tilde{Q}} e^{j \Omega t}, \quad \vv{F_q}(t) = \vv{\tilde{F}_q} e^{j \Omega t}
+\]
+leads to:
+\[
+\left( -\Omega^2 \boldsymbol{M_q} + j \Omega \boldsymbol{C_q} + \boldsymbol{K_q} \right) \vv{\tilde{Q}} = \vv{\tilde{F}_q}
+\]
+This defines the modal FRF:
+\[
+\boldsymbol{H_q}(\Omega) = \left[ -\Omega^2 \boldsymbol{M_q} + j \Omega \boldsymbol{C_q} + \boldsymbol{K_q} \right]^{-1}
+\]
+Hence:
+\[
+\vv{\tilde{Q}} = \boldsymbol{H_q}(\Omega) \vv{\tilde{F}_q}
+\]
+Returning to physical coordinates:
+\[
+\vv{\tilde{X}} = \boldsymbol{\Phi} \vv{\tilde{Q}} = \boldsymbol{\Phi} \boldsymbol{H_q}(\Omega) \vv{\tilde{F}_q} = \boldsymbol{\Phi} \boldsymbol{H_q}(\Omega) \boldsymbol{\Phi}^\top \vv{\tilde{F}_x}
+\]
+Thus, the full FRF matrix in physical coordinates is:
+\[
+\boldsymbol{H}(\Omega) = \boldsymbol{\Phi} \boldsymbol{H_q}(\Omega) \boldsymbol{\Phi}^\top
+\]
+
+\subsection{Single Element of the FRF}
+
+Assume harmonic excitation:
+\[
+\vv{F_x}(t) = \vv{F_{x}} e^{j \Omega t}, \quad \text{with} \quad \vv{F_{x}} =
+\begin{bmatrix}
+0 \\
+\vdots \\
+F_k \\
+\vdots \\
+0
+\end{bmatrix}
+\Rightarrow
+\text{only the \( k \)-th coordinate is excited.}
+\]
+The steady-state response is of the form:
+\[
+\vv{x}(t) = \vv{X_0} e^{j \Omega t}
+\]
+Substituting into the equation of motion:
+\[
+\boldsymbol{M} \vv{\ddot{x}} + \boldsymbol{C} \vv{\dot{x}} + \boldsymbol{K} \vv{x} = \vv{F_x}(t)
+\Rightarrow
+\left( -\Omega^2 \boldsymbol{M} + j \Omega \boldsymbol{C} + \boldsymbol{K} \right) \vv{X_0} = \vv{F_{x}}
+\]
+Hence, the Frequency Response Function (FRF) matrix is:
+\[
+\boldsymbol{H}(\Omega) = \left( -\Omega^2 \boldsymbol{M} + j \Omega \boldsymbol{C} + \boldsymbol{K} \right)^{-1}
+\]
+Transform to modal coordinates:
+\[
+\vv{x} = \boldsymbol{\Phi} \vv{q}, \quad \vv{F_x} = \boldsymbol{\Phi} \vv{F_q}
+\]
+Then the modal equations become:
+\[
+\boldsymbol{M}_q \vv{\ddot{q}} + \boldsymbol{C}_q \vv{\dot{q}} + \boldsymbol{K}_q \vv{q} = \vv{F}_q
+\]
+For harmonic solutions:
+\[
+\vv{q}(t) = \vv{Q_0} e^{j \Omega t}, \quad \vv{F_q}(t) = \vv{F_q} e^{j \Omega t}
+\Rightarrow
+\left( -\Omega^2 \boldsymbol{M}_q + j \Omega \boldsymbol{C}_q + \boldsymbol{K}_q \right) \vv{Q_0} = \vv{F_q}
+\]
+Since \( \boldsymbol{M}_q, \boldsymbol{C}_q, \boldsymbol{K}_q \) are diagonal (in Rayleigh damping assumption), this system fully decouples. Therefore, for each mode \( i \):
+\[
+Q_{0i} = \frac{F_{q,i}}{-\Omega^2 m_{q,ii} + j \Omega c_{q,ii} + k_{q,ii}} = H_{q,ii}(\Omega) F_{q,i}
+\]
+Now focus on the single element \( H_{jk}(\Omega) \), i.e., the response at DOF \( j \) due to an excitation at DOF \( k \). Let \( \vv{F_{x0}} = F_{k0}  \vv{e}_k \), then:
+\[
+F_{q,i} = \vv{X}^{(i)\top} \vv{F_{x}} = X_k^{(i)} F_{k}
+\quad \Rightarrow \quad
+Q_{0i} = H_{q,ii} X_k^{(i)} F_{k}
+\]
+Hence, the steady-state response at coordinate \( j \) is:
+
+\begin{align*}
+&x_j(t) = \sum_{i=1}^n X_j^{(i)} Q_{0i} e^{j \Omega t}
+= \sum_{i=1}^n X_j^{(i)} H_{q,ii} X_k^{(i)} F_{k} e^{j \Omega t}
+= X_{0j} e^{j \Omega t} \\ 
+&\Rightarrow \quad
+X_{0j} = \sum_{i=1}^n \frac{X_j^{(i)} X_k^{(i)}}{-\Omega^2 m_{q,ii} + j \Omega c_{q,ii} + k_{q,ii}} F_{k}
+\end{align*}
+
+Finally, the frequency response function is:
+\[
+H_{jk}(\Omega) = \frac{X_{0j}}{F_{k}} = \sum_{i=1}^n \frac{X_j^{(i)} X_k^{(i)}}{-\Omega^2 m_{q,ii} + j \Omega c_{q,ii} + k_{q,ii}} = \sum_{i=1}^n X_j^{(i)} X_k^{(i)} H_{q,ii}(\Omega)
+\]
+\vfill
+
+\section{Graphical Example}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/Modal/01.png}
+    \caption{Modal FRFs: each subplot illustrates the Frequency Response Function \( H_{jk}(\Omega) \), plotted in terms of both magnitude and phase. The plots on the left correspond to the diagonal terms of the FRF matrix, which isolate the contribution of individual modes and exhibit a clear separation among modal responses. The plots on the right display the off-diagonal terms, which theoretically should be zero due to modal decoupling. In this case, the non-zero values arise from numerical inaccuracies in the computation.}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/Modal/02.png}
+    \caption{Total co-located FRF \( H_{22}(\Omega) \) (left) and its modal contributions (right). The summation of modal FRFs (dashed black line) approximates the total FRF. This decomposition highlights the role of each mode in the global system response.}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/Modal/03.png}
+    \caption{Steady-state response in the time domain for low excitation frequency. The first mode dominates the response: the red dashed curve (first mode only) overlaps almost perfectly with the full system response (black line).}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/Modal/04.png}
+    \caption{Steady-state response for high excitation frequency. The response cannot be described by a single mode only. The black curve (full response) deviates significantly from the red dashed curve (first mode), emphasizing the need for modal superposition.}
+\end{figure}

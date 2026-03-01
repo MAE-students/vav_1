@@ -1,0 +1,378 @@
+%! TEX root = main.tex  
+
+\chapter{Response of 1-DOF Systems}
+
+\section{Free Vibration}
+
+\subsection{Undamped Case}
+
+Consider the free vibration of an undamped single degree of freedom system:
+\[
+m \ddot{x} + kx = 0
+\]
+Assume a solution of the form:
+\[
+x(t) = X e^{\lambda t} \quad \Rightarrow \quad \dot{x}(t) = \lambda X e^{\lambda t}, \quad \ddot{x}(t) = \lambda^2 X e^{\lambda t}
+\]
+Substituting into the equation of motion:
+\[
+m \lambda^2 X e^{\lambda t} + k X e^{\lambda t} = 0 \quad \Rightarrow \quad (m \lambda^2 + k) X e^{\lambda t} = 0
+\]
+Since \( e^{\lambda t} \neq 0 \) and \( X \neq 0 \) (non-trivial solution), the characteristic equation is:
+\[
+m \lambda^2 + k = 0 \quad \Rightarrow \quad \lambda_{1,2} = \pm j \sqrt{\frac{k}{m}} = \pm j \omega_0
+\]
+Thus, the general solution is:
+\[
+x(t) = X_1 e^{j \omega_0 t} + X_2 e^{-j \omega_0 t}
+\]
+Since \( x(t) \in \mathbb{R} \), let:
+\[
+X_1 = \frac{A - jB}{2}, \quad X_2 = \frac{A + jB}{2}
+\]
+So that:
+\begin{align*}
+x(t) &= X_1 \left[ \cos(\omega_0 t) + j \sin(\omega_0 t) \right] + X_2 \left[ \cos(\omega_0 t) - j \sin(\omega_0 t) \right] \\
+&= (X_1 + X_2) \cos(\omega_0 t) + j (X_1 - X_2) \sin(\omega_0 t) \\
+&= A \cos(\omega_0 t) + B \sin(\omega_0 t)
+\end{align*}
+
+Alternatively, define:
+\[
+A = C \cos \phi, \quad B = C \sin \phi \quad \Rightarrow \quad C = \sqrt{A^2 + B^2}, \quad \phi = \arctan\left( \frac{B}{A} \right)
+\]
+so that:
+\[
+x(t) = C \cos(\omega_0 t - \phi)
+\]
+This is the standard harmonic oscillator solution.
+
+\subsection{Damped Case}
+
+Now consider the damped system:
+\[
+m \ddot{x} + c \dot{x} + k x = 0
+\]
+Assume again \( x(t) = X e^{\lambda t} \), \( \dot{x}(t) = \lambda X e^{\lambda t} \), \( \ddot{x}(t) = \lambda^2 X e^{\lambda t} \), then substituting:
+\[
+m \lambda^2 X e^{\lambda t} + c \lambda X e^{\lambda t} + k X e^{\lambda t} = 0
+\quad \Rightarrow \quad 
+(m \lambda^2 + c \lambda + k) X e^{\lambda t} = 0
+\]
+As before, since \( e^{\lambda t} \neq 0 \) and \( X \neq 0 \) (non-trivial solution), the characteristic equation is:
+\[
+m \lambda^2 + c \lambda + k = 0 
+\quad \Rightarrow \quad
+\lambda_{1,2} = \frac{-c \pm \sqrt{c^2 - 4mk}}{2m} = -\alpha \pm \sqrt{\alpha^2 - \omega_0^2}
+\]
+where \( \alpha = \frac{c}{2m} \) and \( \omega_0 = \sqrt{\frac{k}{m}} \).
+
+\paragraph{Critically Damped Case} If \( \Delta = 0 \), i.e., \( \alpha = \omega_0 \), the critical damping value can be computed by requiring the discriminant of the characteristic equation to be zero:
+\[
+\Delta = c^2 - 4mk = 0 \quad \Rightarrow \quad c_{\text{cr}} = 2 \sqrt{km}
+\]
+This yields:
+\[
+\alpha = \frac{c_{\text{cr}}}{2m} = \frac{1}{2m} \cdot 2\sqrt{km} = \sqrt{\frac{k}{m}} = \omega_0
+\]
+As expected, in the critically damped case \( \alpha = \omega_0 \), leading to a double coincident real root:
+\[
+\lambda_{1,2} = -\alpha
+\]
+The solution becomes:
+\[
+x(t) = X_1 e^{-\alpha t} + X_2 t e^{-\alpha t}
+\]
+There is no oscillation. 
+
+\paragraph{Underdamped Case} If \( \Delta < 0 \), i.e., \( \alpha < \omega_0 \), or equivalently \( c < c_{\text{cr}} \), then it yields two complex conjugate solutions:
+\[
+\lambda_{1,2} = -\alpha \pm j \omega_d \quad \text{where} \quad \omega_d = \sqrt{\omega_0^2 - \alpha^2}
+\]
+The solution becomes, using the same decomposition as in the undamped case (complex exponential, trigonometric, and phase form):
+\[
+x(t) = e^{-\alpha t} (X_1 e^{j \omega_d t} + X_2 e^{-j \omega_d t}) 
+= e^{-\alpha t} (A \cos(\omega_d t) + B \sin(\omega_d t)) 
+= C e^{-\alpha t} \cos(\omega_d t - \phi)
+\]
+This is the damped harmonic oscillator response.
+
+\paragraph{Overdamped Case} If \( \Delta > 0 \), i.e., \( \alpha > \omega_0 \), or \( c > c_{\text{cr}} \), then two negative real solutions can be computed:
+\[
+\lambda_{1,2} = -\alpha \pm \beta, \quad \text{with } \beta = \sqrt{\alpha^2 - \omega_0^2}
+\]
+Since \( \beta < \alpha \), both roots are real and negative:
+\[
+\lambda_{1,2} \in \mathbb{R}^- \quad\Rightarrow \quad \lambda_{1,2} = -\alpha_{1,2}
+\]
+The solution becomes:
+\[
+x(t) = X_1 e^{\lambda_1 t} + X_2 e^{\lambda_2 t} = X_1 e^{-\alpha_1 t} + X_2 e^{-\alpha_2 t}
+\]
+No oscillation occurs in this case.
+
+\paragraph{Definition of the Damping Ratio} Define the dimensionless damping ratio:
+\[
+h = \frac{\alpha}{\omega_0} = \frac{c}{2 \sqrt{km}}
+\quad \Rightarrow \quad 
+\lambda_{1,2} = -\alpha \pm j \omega_0 \sqrt{1 - h^2}
+\]
+This compact form helps to distinguish between underdamped (\( h < 1 \)), critically damped (\( h = 1 \)), and overdamped (\( h > 1 \)) systems.
+
+\subsection{Determination of Amplitude Parameters from Initial Conditions}
+
+Given the underdamped solution in trigonometric form:
+\[
+x(t) = e^{-\alpha t} (A \cos(\omega_d t) + B \sin(\omega_d t))
+\]
+and initial conditions \( x(0) = x_0 \), \( \dot{x}(0) = v_0 \), determine the constants \( A \) and \( B \). At \( t = 0 \), the solution becomes:
+\[
+x(0) = A = x_0
+\]
+Taking the derivative:
+\[
+\dot{x}(t) = -\alpha e^{-\alpha t} (A \cos(\omega_d t) + B \sin(\omega_d t)) + e^{-\alpha t} (-A \omega_d \sin(\omega_d t) + B \omega_d \cos(\omega_d t))
+\]
+Evaluating at \( t = 0 \):
+\[
+\dot{x}(0) = -\alpha A + B \omega_d = v_0
+\quad \Rightarrow \quad 
+B = \frac{v_0 + \alpha x_0}{\omega_d}
+\]
+Now express the solution in phase-amplitude form:
+\[
+x(t) = C e^{-\alpha t} \cos(\omega_d t - \phi)
+\]
+The relationship between the constants is:
+\[
+A = C \cos(\phi), \quad B = C \sin(\phi)
+\quad \Rightarrow \quad 
+C = \sqrt{A^2 + B^2}, \quad \phi = \tan^{-1} \left( \frac{B}{A} \right)
+\]
+Substituting the values:
+\[
+C = \sqrt{x_0^2 + \left( \frac{v_0 + \alpha x_0}{\omega_d} \right)^2}, \quad
+\phi = \tan^{-1} \left( \frac{ \frac{v_0 + \alpha x_0}{\omega_d} }{x_0} \right)
+= \tan^{-1} \left( \frac{x_0 \omega_d}{-v_0 - \alpha x_0} \right)
+\]
+These parameters \( A \), \( B \), \( C \), and \( \phi \) uniquely determine the motion for the given initial conditions.
+
+\section{Forced Response}
+
+\subsection{Constant Force}
+
+Consider a system subject to a constant external force \( F(t) = F_0 \). The equation of motion becomes:
+\[
+m \ddot{x} + c \dot{x} + k x = F_0
+\]
+The general solution is given by:
+\[
+x(t) = x_h(t) + x_p(t)
+\]
+where \( x_h(t) \) is the solution of the homogeneous equation (free response), and \( x_p(t) \) is the particular solution due to the forcing term. For a constant input \( F_0 \), the particular solution will be constant. Assume:
+\[
+x_p(t) = X_0, \quad \dot{x}_p(t) = \ddot{x}_p(t) = 0
+\]
+Substituting into the equation:
+\[
+k X_0 = F_0 \quad \Rightarrow \quad X_0 = \frac{F_0}{k}
+\]
+So the full solution is:
+\[
+x(t) = \frac{F_0}{k} + x_h(t)
+\]
+The constant force simply shifts the equilibrium point of the system.
+
+\subsection{Harmonic Forcing}
+
+\paragraph{Undamped case} Now consider a harmonic excitation:
+\[
+F(t) = F_0 \cos(\Omega t + \beta)
+\]
+The equation of motion is:
+\[
+m \ddot{x} + k x = F_0 \cos(\Omega t + \beta)
+\]
+Assume a particular solution of the form:
+\[
+x_p(t) = X_0 \cos(\Omega t + \beta)
+\]
+Then:
+\[
+\dot{x}_p(t) = -X_0 \Omega \sin(\Omega t + \beta), \quad
+\ddot{x}_p(t) = -X_0 \Omega^2 \cos(\Omega t + \beta)
+\]
+Substituting into the differential equation:
+\[
+- m X_0 \Omega^2 \cos(\Omega t + \beta) + k X_0 \cos(\Omega t + \beta) = F_0 \cos(\Omega t + \beta)
+\]
+\[
+\Rightarrow \left( -m \Omega^2 + k \right) X_0 = F_0
+\quad \Rightarrow \quad
+X_0 = \frac{F_0}{k - m \Omega^2} = \frac{F_0}{k \left( 1 - \frac{\Omega^2}{\omega_0^2} \right)}
+\]
+
+\begin{itemize}
+  \item If \( \Omega < \omega_0 \): the amplitude is positive.
+  \item If \( \Omega > \omega_0 \): the amplitude becomes negative (opposite phase).
+  \item If \( \Omega = \omega_0 \): denominator becomes zero, the solution becomes unbounded, this is resonance.
+\end{itemize}
+When \( \Omega = \omega_0 \), the standard ansatz \( x_p(t) = X_0 \cos(\Omega t + \beta) \) is no longer valid. In this case, a particular solution must include a factor of \( t \) to ensure linear independence. A right proposal is:
+\[
+x_p(t) = X_0 t \sin(\Omega t + \beta)
+\]
+Compute the derivatives:
+
+\begin{align*}
+\dot{x}_p(t) &= X_0 \sin(\Omega t + \beta) + X_0 t \Omega \cos(\Omega t + \beta) \\
+\ddot{x}_p(t) &= X_0 \Omega \cos(\Omega t + \beta) 
+- X_0 t \Omega^2 \sin(\Omega t + \beta)
++ X_0 \Omega \cos(\Omega t + \beta) \\
+&= 2 X_0 \Omega \cos(\Omega t + \beta) 
+- X_0 t \Omega^2 \sin(\Omega t + \beta)
+\end{align*}
+
+Now substitute into the undamped equation:
+\[
+m \ddot{x}_p + k x_p = F_0 \cos(\Omega t + \beta)
+\]
+
+\begin{align*}
+&m \left[ 2 X_0 \Omega \cos(\Omega t + \beta) - X_0 t \Omega^2 \sin(\Omega t + \beta) \right]
++ k X_0 t \sin(\Omega t + \beta) \\
+&= 2 m X_0 \Omega \cos(\Omega t + \beta)
++ X_0 t \left( - m \Omega^2 + k \right) \sin(\Omega t + \beta)
+\end{align*}
+
+But if \( \Omega = \omega_0 = \sqrt{k/m} \), then \( k = m \Omega^2 \), so:
+\[
+- m \Omega^2 + k = 0
+\quad \Rightarrow \quad
+\text{the term in } t \sin(\cdot) \text{ cancels out}
+\]
+It left with:
+\[
+2 m X_0 \Omega \cos(\Omega t + \beta) = F_0 \cos(\Omega t + \beta)
+\quad \Rightarrow \quad
+X_0 = \frac{F_0}{2 m \Omega}
+\]
+Thus, the particular solution at resonance becomes:
+\[
+x_p(t) = \frac{F_0}{2 m \Omega} t \sin(\Omega t + \beta)
+\]
+This solution grows unbounded in amplitude with time: it represents resonance.
+
+\paragraph{Damped Case} When damping is present, the equation becomes:
+\[
+m \ddot{x} + c \dot{x} + k x = F_0 \cos(\Omega t + \beta)
+\]
+Assume a steady-state response of the form:
+\[
+x_p(t) = \Re\left\{ \tilde{X_0} e^{j(\Omega t + \beta)} \right\}
+\quad \text{with} \quad \tilde{X_0} \in \mathbb{C}
+\]
+Substitute into the equation:
+\[
+(-m \Omega^2 + j c \Omega + k) \tilde{X_0} = F_0
+\quad \Rightarrow \quad
+\tilde{X_0} = \frac{F_0}{k - m \Omega^2 + j c \Omega}
+\]
+Let:
+\[
+H(\Omega) = \frac{1}{k - m \Omega^2 + j c \Omega}
+\quad \Rightarrow \quad
+\tilde{X_0} = F_0 H(\Omega)
+\]
+Then:
+\[
+x_p(t) = |H(\Omega)| F_0 \cos(\Omega t + \beta + \angle H(\Omega))
+\]
+This gives the steady-state amplitude and phase shift as a function of the frequency. Let us compute:
+\[
+|H(\Omega)| = \left| \frac{1}{k - m \Omega^2 + j c \Omega} \right|
+= \frac{1}{\sqrt{(k - m \Omega^2)^2 + (c \Omega)^2}}
+\]
+and:
+\[
+\angle H(\Omega) = \arctan\left( \frac{-c \Omega}{k - m \Omega^2} \right)
+\]
+
+\paragraph{Summary of Damped Harmonic Response} The complete solution is:
+\[
+x(t) = x_h(t) + x_p(t)
+\]
+where \( x_h(t) \) is the transient component and \( x_p(t) \) the steady-state one. Graphically, the amplitude and phase shift show distinct behaviors:
+\begin{itemize}
+  \item For low \( \Omega \): quasi-static regime.
+  \item For \( \Omega \approx \omega_0 \): resonance zone.
+  \item For high \( \Omega \): inertial regime or seismographic zone.
+\end{itemize}
+
+\subsection{Periodic Excitation}
+
+When the external excitation \( f(t) \) is periodic but not purely harmonic, it can be expressed as a Fourier series:
+\[
+f(t) = a_0 + \sum_{n=1}^{\infty} \left[ a_n \cos(n \Omega t) + b_n \sin(n \Omega t) \right]
+\]
+or equivalently in complex exponential form:
+\[
+f(t) = \sum_{n=-\infty}^{+\infty} c_n e^{j n \Omega t}
+\]
+where the Fourier coefficients are defined as:
+\[
+c_n = \frac{1}{T} \int_0^T f(t) e^{-j n \Omega t}  dt, \quad T = \frac{2\pi}{\Omega}
+\]
+The linearity of the system allows us to treat each harmonic component independently and sum the individual responses:
+\[
+x(t) = \sum_{n=-\infty}^{+\infty} H(j n \Omega) c_n e^{j n \Omega t}
+\]
+where \( H(j n \Omega) \) is the frequency response function evaluated at the harmonic frequency \( n \Omega \), given by:
+\[
+H(j n \Omega) = \frac{1}{-m (n \Omega)^2 + j c (n \Omega) + k}
+= \frac{1}{k \left( 1 - \frac{(n \Omega)^2}{\omega_0^2} + j \frac{2 h n \Omega}{\omega_0} \right)}
+\]
+This result holds both for underdamped, overdamped, and critically damped systems, and each harmonic response contributes an oscillation at frequency \( n \Omega \) scaled and phase-shifted according to \( H(j n \Omega) \).
+
+\paragraph{Interpretation:}
+
+\begin{itemize}
+    \item The system behaves as a filter, attenuating or amplifying different frequency components depending on proximity to resonance \( \omega_0 \).
+    \item Resonance may occur for one or more harmonics if \( n \Omega \approx \omega_0 \).
+    \item The total steady-state response \( x_p(t) \) will be a quasi-periodic function, reconstructing the shape of the original excitation filtered by the system's dynamics.
+\end{itemize}
+
+\paragraph{Summary:} The complete response of a linear 1-DOF system to a periodic but non-harmonic excitation is obtained by:
+
+\begin{enumerate}
+    \item Expanding \( f(t) \) into its Fourier components.
+    \item Computing the response of the system to each harmonic using the frequency response function.
+    \item Summing all individual harmonic responses via superposition.
+\end{enumerate}
+
+\section{Graphical Example}
+
+The following figures illustrate the theoretical response behaviors of a linear 1-DOF mechanical system under various conditions, both in free and forced vibration scenarios:
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/1_DOF/01.png}
+    \caption{Free vibration responses for different damping ratios \( h \). A lower damping ratio leads to slower energy dissipation and higher oscillation amplitude. The critical case (\( h = 1 \)) marks the transition to non-oscillatory behavior.}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/1_DOF/02.png}
+    \caption{Frequency Response Function (FRF) in magnitude and phase for increasing damping ratios. As damping increases, the resonance peak flattens and the phase transition around \( \omega_0 \) becomes smoother.}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/1_DOF/03.png}
+    \caption{Complete response to harmonic excitation for three different excitation frequencies. Each subplot shows the transient (blue), steady-state (red), and total response (green).}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.95\linewidth]{00_Images/1_DOF/04.png}
+    \caption{Response to a multi-harmonic periodic forcing. Top: external torque and its harmonic components. Bottom: corresponding system response, where each harmonic contributes to the total oscillation according to the system's frequency response.}
+\end{figure}

@@ -1,0 +1,344 @@
+%! TEX root = main.tex
+
+\chapter{N-DOF Systems: Matrix Formulation}
+
+Consider a mechanical system with \( n \) degrees of freedom, described by the generalized coordinate vector:
+\[
+\vv{x}(t) =
+\begin{bmatrix}
+x_1(t) \\
+x_2(t) \\
+\vdots \\
+x_n(t)
+\end{bmatrix}
+\in \mathbb{R}^n
+\]
+Each coordinate \( x_i(t) \) is associated with a kinetic energy contribution, a potential energy component, and possibly a dissipative term. The total dynamics of the system can be formulated using the Lagrangian formalism extended to multiple degrees of freedom. The corresponding vectorial form of the \( n \) Lagrange equations is:
+\[
+\frac{d}{dt} \left( \frac{\partial T}{\partial \vv{\dot{x}}} \right) - \frac{\partial T}{\partial \vv{x}} 
++ \frac{\partial D}{\partial \vv{\dot{x}}}
++ \frac{\partial V}{\partial \vv{x}} = \vv{Q_x}
+\]
+where:
+
+\begin{itemize}
+  \item \( T \) is the total kinetic energy;
+  \item \( V \) is the potential energy;
+  \item \( D \) is the Rayleigh dissipation function;
+  \item \( \vv{Q}_x \in \mathbb{R}^n \) is the vector of generalized non-conservative external forces.
+\end{itemize}
+
+This expression represents the compact matrix extension of:
+\[
+\frac{d}{dt} \left( \frac{\partial T_i}{\partial \dot{x}_i} \right)
+- \frac{\partial T_i}{\partial x_i}
++ \frac{\partial D}{\partial \dot{x}_i}
++ \frac{\partial V}{\partial x_i}
+= Q_{x_i} \quad \text{for all } i = 1, \dots, n
+\]
+This formulation extends the single-degree-of-freedom dynamics to arbitrary \( n \)-DOF systems. Let's see how it can be easily expressed by analyzing each term.
+
+\section{Kinetic Energy}
+
+Kinetic energy is modeled via:
+\[
+T = \frac{1}{2} \sum_{i=1}^{N_B} \left( m_i v_i^2 + J_i \omega_i^2\right)
+\]
+where:
+
+\begin{itemize}
+  \item \( N_B \): number of bodies;
+  \item \( m_i \) and \( J_i \): mass and inertia of the \( i \)-th body;
+  \item \( v_i \) and \( \omega_i\): velocity and angular velocity of the \( i \)-th body;
+\end{itemize}
+
+Let the physical velocity variables be collected in the vector:
+\[
+\vv{\dot{y}_m} =
+\begin{bmatrix}
+v_1 \\
+\omega_1 \\
+\vdots \\
+v_{N_B} \\
+\omega_{N_B}
+\end{bmatrix}
+\in \mathbb{R}^{2N_B}
+\]
+The total kinetic energy of the system is:
+\[
+T = \frac{1}{2} \vv{\dot{y}_m}^\top \boldsymbol{m_{PH}} \vv{\dot{y}_m}
+\]
+where \( \boldsymbol{m_{PH}} \in \mathbb{R}^{2N_B \times 2N_B} \) is the diagonal matrix of physical masses and inertias:
+\[
+\boldsymbol{m_{PH}} =
+\begin{bmatrix}
+m_1   & 0     & \cdots  & 0    & 0     \\
+0    & J_1    & \cdots  & 0    & 0     \\
+\vdots & \vdots  & \ddots  & \vdots  & \vdots  \\
+0    & 0    & \cdots  & m_{N_B}  & 0     \\
+0    & 0    & \cdots  & 0     & J_{N_B}
+\end{bmatrix}
+\]
+The physical velocities are functions of the generalized coordinates \( \vv{x}(t) \in \mathbb{R}^n \). Derive, with clear use of symbols, the Jacobian matrix \( \boldsymbol{\Lambda_m} \in \mathbb{R}^{2N_B \times n} \) such that:
+\[
+\vv{\dot{y}_m} = \frac{d}{dt}(\vv{y_m}) = \frac{\partial \vv{y_m}}{\partial \vv{x}} \cdot \frac{d \vv{x}}{dt} = \boldsymbol{\Lambda_m} \vv{\dot{x}}
+\]
+Then, substituting into the kinetic energy expression:
+\[
+T = \frac{1}{2} \vv{\dot{x}}^\top \boldsymbol{\Lambda_m}^\top \boldsymbol{m_{PH}} \boldsymbol{\Lambda_m} \vv{\dot{x}}
+\]
+Define the mass matrix \( \boldsymbol{M} \in \mathbb{R}^{n \times n} \) as:
+\[
+\boldsymbol{M} = \boldsymbol{\Lambda_m}^\top \boldsymbol{m_{PH}} \boldsymbol{\Lambda_m}
+\]
+Therefore, the kinetic energy takes the compact matrix form:
+\[
+T = \frac{1}{2} \vv{\dot{x}}^\top \boldsymbol{M} \vv{\dot{x}}
+\]
+The matrix \( \boldsymbol{M} \) is symmetric and positive definite, ensuring physical consistency under standard physical assumptions.
+
+\section{Dissipative Function}
+
+Dissipative forces, such as viscous damping, are modeled via the Rayleigh dissipation function:
+\[
+D = \frac{1}{2} \sum_{i=1}^{N_D} c_i \dot{\delta}_i^2
+\]
+where:
+
+\begin{itemize}
+  \item \( N_D \): number of dampers;
+  \item \( c_i \): damping coefficient of the \( i \)-th damper;
+  \item \( \dot{\delta}_i \): elongation velocity of the \( i \)-th damper.
+\end{itemize}
+
+Let \( \vv{\dot{\delta}} \in \mathbb{R}^{N_D} \) be the vector of elongation rates for all dampers, \( \boldsymbol{c_{PH}} \in \mathbb{R}^{N_D \times N_D} \) the matrix that collects every damping coefficient:
+\[
+\vv{\dot{\delta}} =
+\begin{bmatrix}
+\dot{\delta}_1 \\
+\dot{\delta}_2 \\
+\vdots \\
+\dot{\delta}_{N_D}
+\end{bmatrix}, \quad
+\boldsymbol{c_{PH}} =
+\begin{bmatrix}
+c_1 & 0 & \cdots & 0 \\
+0 & c_2 & \cdots & 0\\
+\vdots & \vdots  & \ddots & \vdots \\
+0  & 0 & \cdots   & c_{N_D}
+\end{bmatrix}
+\]
+Then, the dissipation function becomes:
+\[
+D = \frac{1}{2} \vv{\dot{\delta}}^\top \boldsymbol{c_{PH}} \vv{\dot{\delta}}
+\]
+
+Now express \( \vv{\dot{\delta}} \) as a function of the generalized coordinates \( \vv{x} \in \mathbb{R}^n \). Let:
+\[
+\vv{\dot{\delta}} = \frac{d}{dt}(\vv{\delta}) = \frac{\partial \vv{\delta}}{\partial \vv{x}} \cdot \vv{\dot{x}} = \boldsymbol{\Lambda_{\Delta}} \vv{\dot{x}}
+\]
+where \( \boldsymbol{\Lambda_{\Delta}} \in \mathbb{R}^{N_D \times n} \) is the Jacobian matrix that relates the damper elongations to the generalized velocities. Substituting into the dissipation function:
+\[
+D = \frac{1}{2} \vv{\dot{x}}^\top \boldsymbol{\Lambda_{\Delta}}^\top \boldsymbol{c_{PH}} \boldsymbol{\Lambda_{\Delta}} \vv{\dot{x}}
+\]
+Define the damping matrix \( \boldsymbol{C} \in \mathbb{R}^{n \times n} \) as:
+\[
+\boldsymbol{C} = \boldsymbol{\Lambda_{\Delta}}^\top \boldsymbol{c_{PH}} \boldsymbol{\Lambda_{\Delta}}
+\]
+Then the Rayleigh dissipation function takes the compact form:
+\[
+D = \frac{1}{2} \vv{\dot{x}}^\top \boldsymbol{C} \vv{\dot{x}}
+\]
+The damping matrix \( \boldsymbol{C} \) is symmetric positive semi-definite under standard physical assumptions. 
+
+\section{Potential Energy}
+
+The total potential energy of a mechanical system typically arises from two main contributions: the deformation of elastic elements (e.g., springs) and the gravitational field. Both contributions depend on the system configuration \( \vv{x} \in \mathbb{R}^n \), and must be expressed accordingly.
+
+\subsection{Elastic Potential Energy}
+
+Elastic Potential Energy is modeled via:
+\[
+T = \frac{1}{2} \sum_{i=1}^{N_S} k_i \delta_i^2
+\]
+where:
+
+\begin{itemize}
+  \item \( N_S \): number of springs;
+  \item \( k_i \): stiffness coefficient of the \( i \)-th spring;
+  \item \( \delta_i \): elongation of the \( i \)-th spring.
+\end{itemize}
+
+Let \( \vv{\delta} \in \mathbb{R}^{N_S} \) be the vector of spring elongations. The total elastic potential energy is:
+\[
+V_{el} = \frac{1}{2} \vv{\delta}^\top \boldsymbol{k_{PH}} \vv{\delta}
+\]
+where \( \boldsymbol{k_{PH}} \in \mathbb{R}^{N_S \times N_S} \) is a diagonal matrix of stiffness coefficients:
+\[
+\boldsymbol{k_{PH}} =
+\begin{bmatrix}
+k_1 & 0 & \cdots & 0 \\
+0 & k_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & k_{N_S}
+\end{bmatrix}
+\]
+To relate the elongations to the generalized coordinates, consider a linearized kinematic relation around the equilibrium configuration \( \vv{x_0} \). The elongation vector is written as:
+\[
+\vv{\delta} = \vv{\delta_0} + \frac{\partial \vv{\delta}}{\partial \vv{x}} (\vv{x} - \vv{x_0}) = \vv{\delta_0} + \boldsymbol{\Lambda_{\Delta}} \vv{x}
+\]
+where \( \boldsymbol{\Lambda_{\Delta}} \in \mathbb{R}^{N_S \times n} \) is the Jacobian matrix of elongations, assumed constant for linear systems. Substituting this into the expression for \( V_{el} \):
+\[
+V_{el} = \frac{1}{2} \left( \vv{\delta_0} + \boldsymbol{\Lambda_{\Delta}} \vv{x} \right)^\top \boldsymbol{k_{PH}} \left( \vv{\delta_0} + \boldsymbol{\Lambda_{\Delta}} \vv{x} \right)
+\]
+Expanding:
+\[
+V_{el} = \underbrace{\frac{1}{2} \vv{\delta_0}^\top \boldsymbol{k_{PH}} \vv{\delta_0}}_{\text{Constant term}}
++ \underbrace{\frac{1}{2} \vv{\delta_0}^\top \boldsymbol{k_{PH}} \boldsymbol{\Lambda_{\Delta}} \vv{x}
++ \frac{1}{2} \vv{x}^\top \boldsymbol{\Lambda_{\Delta}}^\top \boldsymbol{k_{PH}} \vv{\delta_0}}_{\text{Linear terms}}
++ \underbrace{\frac{1}{2} \vv{x}^\top \boldsymbol{\Lambda_{\delta}}^\top \boldsymbol{k_{PH}} \boldsymbol{\Lambda_{\delta}} \vv{x}}_{\text{Quadratic term}}
+\]
+This decomposition includes:
+
+\begin{itemize}
+  \item A constant term, irrelevant in the Lagrangian equations;
+  \item Two linear term, which vanish if the equilibrium point is such that \( \vv{\delta_0} = 0 \);
+  \item A quadratic term, which defines the elastic restoring force.
+\end{itemize}
+
+Thus, for systems linearized around the equilibrium, the elastic potential energy reduces to:
+\[
+V_{el} = \frac{1}{2} \vv{x}^\top \boldsymbol{K} \vv{x}
+\quad \text{with} \quad \boldsymbol{K} = \boldsymbol{\Lambda_{\Delta}}^\top \boldsymbol{k_{PH}} \boldsymbol{\Lambda_{\Delta}}
+\]
+Here \( \boldsymbol{K} \in \mathbb{R}^{n \times n} \) is the global stiffness matrix, which is symmetric and positive definite under standard physical assumptions.
+
+\subsection{Gravitational Potential Energy}
+
+As done before, let \( \vv{h} \in \mathbb{R}^{N_B} \) be the vector of vertical positions of the centers of mass of each body, and let \( \vv{p} \in \mathbb{R}^{N_B} \) be the vector of weights \( p_i = m_i g \). Then the gravitational potential energy is:
+\[
+V_g = \sum_{i=1}^{N_B} m_i g h_i = \vv{p}^\top \vv{h}
+\]
+Linearizing around an equilibrium point \( \vv{x_0} \), the vertical positions are expressed as:
+\[
+\vv{h} = \vv{h_0} + \boldsymbol{\Lambda_h} \vv{x}
+\quad \Rightarrow \quad
+V_g = \vv{p}^\top \vv{h_0} + \vv{p}^\top \boldsymbol{\Lambda_h} \vv{x}
+\]
+As before, the first term is constant and does not affect the dynamics. The second term is linear in \( \vv{x} \), and may contribute to the equations of motion. However, if the system is linearized around the equilibrium configuration, this linear term cancels out, yielding:
+\[
+V_g = 0 \quad \text{(no contribution to dynamics)}
+\]
+Hence, the total potential energy for linear systems simplifies to:
+\[
+V = V_{el} = \frac{1}{2} \vv{x}^\top \boldsymbol{K} \vv{x}
+\]
+This form is quadratic and compatible with linear stiffness forces in the Lagrangian formulation.
+
+\section{Virtual Work}
+
+The principle of virtual work, when extended to systems with multiple degrees of freedom, states that the virtual work performed by all applied external forces and torques is:
+\[
+\delta W = \sum_{i=1}^{N_F} \vv{F_i}^\top \vv{\delta P_i} + \sum_{j=1}^{N_C} C_j  \delta \theta_j
+\]
+where:
+\begin{itemize}
+    \item \( \vv{F_i} \in \mathbb{R}^2 \): external forces;
+    \item \( \vv{\delta P_i} \in \mathbb{R}^2 \): virtual displacements at the force application points;
+    \item \( C_j \in \mathbb{R} \): applied torques;
+    \item \( \delta \theta_j \in \mathbb{R} \): virtual angular displacements.
+\end{itemize}
+
+All virtual displacements are related to the generalized coordinates \( \vv{x} \in \mathbb{R}^n \) through appropriate Jacobian matrices. Define:
+\[
+\vv{\delta y_F} =
+\begin{bmatrix}
+\vv{\delta P_1} \\
+\delta \theta_1 \\
+\vdots \\
+\vv{\delta P}_{N_F} \\
+\delta \theta_{N_C}
+\end{bmatrix}
+\in \mathbb{R}^{2N_F + N_C}, \quad
+\vv{F} =
+\begin{bmatrix}
+\vv{F_1} \\
+C_1 \\
+\vdots \\
+\vv{F}_{N_F} \\
+C_{N_C}
+\end{bmatrix}
+\in \mathbb{R}^{2N_F + N_C}
+\]
+Let \( \boldsymbol{\Lambda_F} \in \mathbb{R}^{(2N_F + N_C) \times n} \) be the Jacobian matrix relating \( \vv{\delta y_F} \) to \( \vv{\delta x} \):
+\[
+\vv{\delta y_F} = \boldsymbol{\Lambda_F}  \vv{\delta x}
+\]
+Then, the total virtual work becomes:
+\[
+\delta W = \vv{F}^\top  \vv{\delta y_F} = \vv{F}^\top \boldsymbol{\Lambda_F}  \vv{\delta x} 
+= \left( \boldsymbol{\Lambda_F}^\top \vv{F} \right)^\top \vv{\delta x}
+\]
+This identifies the generalized external force vector:
+\[
+\vv{Q_x} = \boldsymbol{\Lambda_F}^\top  \vv{F}
+\]
+
+\section{Lagrange Equation}
+
+Now return to the complete Lagrangian formulation for systems with multiple degrees of freedom:
+\[
+\frac{d}{dt} \left( \frac{\partial T}{\partial \vv{\dot{x}}} \right)
+- \frac{\partial T}{\partial \vv{x}} 
++ \frac{\partial D}{\partial \vv{\dot{x}}}
++ \frac{\partial V}{\partial \vv{x}} = \vv{Q}_x
+\]
+Evaluate each term individually using the previously defined expressions for kinetic energy, dissipation function, and potential energy. From the expression of kinetic energy:
+\[
+T = \frac{1}{2} \vv{\dot{x}}^\top \boldsymbol{M}  \vv{\dot{x}}
+\]
+Compute:
+\[
+\frac{d}{dt} \left( \frac{\partial T}{\partial \vv{\dot{x}}} \right)
+= \frac{d}{dt} \left( \boldsymbol{M}  \vv{\dot{x}} \right)
+= \boldsymbol{M}  \vv{\ddot{x}}
+\]
+Furthermore, for linear or linearized systems with a constant mass matrix:
+\[
+\frac{\partial T}{\partial \vv{x}} = \vv{0}
+\]
+Given the Rayleigh dissipation function:
+\[
+D = \frac{1}{2} \vv{\dot{x}}^\top  \boldsymbol{C}  \vv{\dot{x}}
+\]
+the partial derivative with respect to \( \vv{\dot{x}} \) gives:
+\[
+\frac{\partial D}{\partial \vv{\dot{x}}} = \boldsymbol{C}  \vv{\dot{x}}
+\]
+Given the potential energy (elastic):
+\[
+V = \frac{1}{2} \vv{x}^\top  \boldsymbol{K}  \vv{x}
+\]
+its gradient with respect to \( \vv{x} \) is:
+\[
+\frac{\partial V}{\partial \vv{x}} = \boldsymbol{K}  \vv{x}
+\]
+As seen in the virtual work section, external forces can be written in the form:
+\[
+\vv{Q}_x = \boldsymbol{\Lambda_F}^\top  \vv{F}(t)
+\]
+where:
+
+\begin{itemize}
+    \item \( \boldsymbol{\Lambda_F} \): Jacobian matrix relating external forces to generalized coordinates;
+    \item \( \vv{F}(t) \): vector of applied forces and torques.
+\end{itemize}
+
+Substituting all computed terms into the Lagrangian expression yields:
+\[
+\boldsymbol{M}  \vv{\ddot{x}} 
++ \boldsymbol{C}  \vv{\dot{x}} 
++ \boldsymbol{K}  \vv{x} 
+= \boldsymbol{\Lambda_F}^\top  \vv{F}(t)
+\]
+This is the final matrix form of the equation of motion for N-DOF systems under linear or linearized assumptions. It governs the dynamic response of the system and is used for both analytical and numerical simulation purposes.

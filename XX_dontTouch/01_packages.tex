@@ -1,0 +1,147 @@
+%! TEX root = main.tex  % Specifies the main document file for multi-file projects
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Early Package Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configure hyperlink colors (black links, colored text links enabled)
+\PassOptionsToPackage{colorlinks=True, linkcolor=black, anchorcolor=black, citecolor=black, filecolor=black, menucolor=black, runcolor=black, urlcolor=black}{hyperref}
+
+% Pass options for additional packages
+\PassOptionsToPackage{most}{tcolorbox} % Load most libraries for tcolorbox
+\PassOptionsToPackage{bottom}{footmisc} % Place footnotes at the bottom
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic Formatting, Language, and Font Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{titlesec}           % Custom section title formatting
+\RequirePackage{color}              % Color support
+\RequirePackage{newpxtext}          % Palatino-like text font
+\RequirePackage[utf8]{inputenc}     % UTF-8 input encoding
+\RequirePackage[english]{babel}     % Set document language to English
+\RequirePackage[T1]{fontenc}        % T1 font encoding for better output
+\RequirePackage{lmodern}            % Latin Modern fonts
+\DeclareFontFamily{T1}{lmtt}{}
+\DeclareFontShape{T1}{lmtt}{bx}{sc}{<-> ssub * lmtt/bx/n}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Image and Graphics Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{graphicx}           % Image inclusion
+\graphicspath{{Images/}}            % Default image path
+\RequirePackage{eso-pic}            % Background images, watermarks
+\RequirePackage{subfig}             % Subfigures within a figure
+\RequirePackage{caption}            % Customize figure and table captions
+\RequirePackage{transparent}        % Transparency effects
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematics Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{mathrsfs}           % Script fonts for math
+\RequirePackage{mathpazo}           % Palatino-compatible math fonts
+\RequirePackage{amsmath}            % Advanced math typesetting
+\RequirePackage{amsthm}             % Theorem-like environments
+\RequirePackage{bm}                 % Bold math symbols
+\RequirePackage[overload]{empheq}   % Enhanced equation environments
+\RequirePackage{esvect}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{tabularx}           % Flexible-width tables
+\RequirePackage{longtable}          % Multi-page tables
+\RequirePackage{colortbl}           % Colored table cells
+\RequirePackage{multirow}           % Multi-row table cells
+\RequirePackage{booktabs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algorithm and Pseudocode Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{algorithm}          % Floating algorithm environment
+\RequirePackage{algorithmic}        % Pseudocode formatting
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix Support
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{appendix}           % Appendix handling
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Additional Utilities and Formatting Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{thmtools,xcolor}    % Theorem tools and colors
+\RequirePackage{comment}            % Block comments
+\RequirePackage{fancyhdr}           % Custom headers/footers
+\RequirePackage{lipsum}             % Placeholder text
+\RequirePackage{tcolorbox}          % Colored boxes
+\RequirePackage{changepage}         % Adjust page layout
+\RequirePackage{setspace}           % Line spacing
+\RequirePackage{indentfirst}        % Indent first paragraph
+\RequirePackage{subcaption}         % Sub-captions
+\RequirePackage{footnote}           % Enhanced footnotes
+\RequirePackage{footmisc}           % Footnote control
+\RequirePackage{wrapfig}            % Text wrapping around figures
+\RequirePackage{float}              % Float placement
+\RequirePackage{scrextend}          % Extra commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code Listings and Diagram Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{listings}           % Code listings with syntax highlighting
+\RequirePackage{tikz}               % Diagram drawing
+\RequirePackage{pgffor}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, decorations.pathmorphing} % TikZ libraries
+\RequirePackage{adjustbox}          % Adjustable box sizes
+\RequirePackage{watermark}          % Watermarks
+\RequirePackage{acronym}            % Acronym management
+\RequirePackage{courier}            % Courier typewriter font
+\RequirePackage{pdfpages}           % To insert pdf file
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Python Code and Minted Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{xparse}             % Advanced command parsing
+\RequirePackage{enumitem}           % Custom list environments
+\RequirePackage[dvipsnames]{xcolor} % Extended color definitions
+\tcbuselibrary{minted}              % Minted integration with tcolorbox
+\RequirePackage{minted}             % Syntax-highlighted code listings
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PDF Output and Color Profiles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{etoolbox}           % Advanced LaTeX programming tools
+\RequirePackage{colorprofiles}      % PDF color profile management
+\RequirePackage[a-2b, mathxmp]{pdfx}[\today]     % PDF/X compliance
+\RequirePackage{hyperref}           % Hyperlink and reference management
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References and Bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{url}                % Improved URL formatting
+\RequirePackage{cleveref}           % Enhanced cross-referencing
+\RequirePackage[autostyle]{csquotes} % Context-sensitive quotation marks
+\RequirePackage[backend=biber, style=numeric, sorting=nyt]{biblatex} % BibLaTeX configuration
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document Meta-data and Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\title}[1]{\gdef\@title{#1}}
+\newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
+\renewcommand{\author}[1]{\gdef\@author{#1}}
+\newcommand{\PID}[1]{\gdef\@PID{#1}}
+\newcommand{\SID}[1]{\gdef\@SID{#1}}
+\newcommand{\university}[1]{\gdef\@university{#1}}
+\newcommand{\mastername}[1]{\gdef\@mastername{#1}}
+\newcommand{\academicYear}[1]{\gdef\@academicYear{#1}}
+\renewcommand{\date}[1]{\gdef\@date{#1}}
+\newcommand{\advisor}[1]{\gdef\@advisor{#1}}
+\newcommand{\coadvisor}[1]{\gdef\@coadvisor{#1}}
+\newcommand{\coadvisorsUniversity}[1]{\gdef\@coadvisorsUniversity{#1}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography Adjustment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginBibliography{\sloppy} % Allow looser line breaking in bibliography entries
+\DefineBibliographyStrings{english}{
+  bibliography = {\bibname}, % Rename the bibliography title to "References"
+}

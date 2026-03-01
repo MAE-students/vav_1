@@ -1,0 +1,187 @@
+%! TEX root = main.tex 
+
+\chapter{Identification of Modal Parameters}
+
+When modeling a mechanical system, it is often necessary to perform measurements in order to validate or update the model. In some cases, the exact values of the system parameters are not known (especially the damping ratio), while in others, the measurements serve to check the accuracy of the theoretical predictions. This chapter introduces several techniques for identifying modal parameters, such as natural frequencies, damping ratios, and mode shapes, either from time or frequency domain measurements.
+
+\section{Time Domain: Logarithmic Decrement Technique}
+
+To compute the damping ratio \( h \) of a slightly damped 1-DOF system (with \( \omega_d \approx \omega_0 \)) under free vibration, one can analyze its time response \( x(t) \), which takes the form:
+\[
+x(t) = C e^{-\alpha t} \cos(\omega_d t + \varphi)
+\]
+Here, \( \alpha = h \omega_0 \) is the exponential decay rate, and \( \omega_d = \omega_0 \sqrt{1 - h^2} \) is the damped natural frequency. Consider the envelope of the decaying oscillation, and define two consecutive peak values spaced by \( n \) periods:
+\begin{itemize}
+    \item The first peak \( x_A = x(\bar{t}) \)
+    \item The second peak \( x_B = x(\bar{t} + nT) \), where \( T = \frac{2\pi}{\omega_d} \) is the period of damped oscillation.
+\end{itemize} 
+
+Define the logarithmic decrement \( \delta \) as:
+\[
+\delta = \ln \left( \frac{x_A}{x_B} \right)
+\]
+Substituting from the response:
+\[
+x_A = C e^{-\alpha \bar{t}} \cos(\omega_d \bar{t} + \varphi), \quad
+x_B = C e^{-\alpha (\bar{t} + nT)} \cos(\omega_d (\bar{t} + nT) + \varphi)
+\]
+Since the cosine term has the same value at intervals of \( T \), it simplifies out in the ratio:
+\begin{align*}
+\delta &= \ln \left( \frac{x(\bar{t})}{x(\bar{t} + nT)} \right)
+= \ln \left( \frac{C e^{-\alpha \bar{t}} \cos(\omega_d \bar{t} + \varphi)}{C e^{-\alpha (\bar{t} + nT)} \cos(\omega_d \bar{t} + \omega_d nT + \varphi)} \right) \\
+&= \ln \left( \frac{e^{-\alpha \bar{t}}}{e^{-\alpha (\bar{t} + nT)}} \right)
+= \ln \left( e^{\alpha nT} \right)
+= \alpha nT
+\end{align*}
+Replacing \( \alpha = h \omega_0 \) and \( T = \frac{2\pi}{\omega_d} \), it is obtained:
+\[
+\delta = h \omega_0 n \cdot \frac{2\pi}{\omega_d} = 2\pi h n \cdot \frac{\omega_0}{\omega_d}
+\]
+Now, for a slightly damped system, \( \omega_d = \omega_0 \sqrt{1 - h^2} \), so:
+\[
+\frac{\omega_0}{\omega_d} = \frac{1}{\sqrt{1 - h^2}} \Rightarrow
+\delta = 2\pi h n \cdot \frac{1}{\sqrt{1 - h^2}}
+\]
+Finally, assuming \( h \ll 1 \), \( \sqrt{1 - h^2} \approx 1 \) can be used, so:
+\[
+\delta \approx 2\pi h n \Rightarrow
+h \approx \frac{\delta}{2\pi n}
+\]
+This technique is particularly effective in experimental settings where free decaying vibrations can be measured, and provides a direct estimation of damping using only two peak values spaced by a known number of periods.
+
+\section{Frequency Domain: Experimental FRF Identification}
+
+The Frequency Response Function (FRF) \( H_{jk}(\Omega) \) describes the steady-state response of the system at output coordinate \( x_j \) due to a harmonic force applied at input coordinate \( F_k \). It can be experimentally identified using two main types of excitation: harmonic and impulsive. In both cases, sensors such as accelerometers are used to record the output response.
+
+\subsection{Measurement Setup (SIMO)}
+
+The standard approach is SIMO (Single Input, Multiple Output): a single force \( F_k(t) \) is applied to the system, and the responses \( x_j(t) \), with \( j = 1, 2, \ldots, n_m \), are measured at various locations. Possible types of excitation signals include:
+\begin{itemize}
+    \item Harmonic signal (steady-state sinusoidal input)
+    \item Impulsive signal (e.g., hammer impact)
+    \item Frequency-sweep signals (e.g., chirp)
+\end{itemize}
+
+\subsection{Harmonic Excitation}
+
+In the harmonic excitation case, the applied force has the form:
+\[
+F_k(t) = F_{k0} \cos(\Omega_e t), \quad \Omega_e = \frac{2\pi}{T_e}
+\]
+After transients die out, the system reaches a steady-state regime. The steady-state response at location \( x_j(t) \) is also harmonic and phase-shifted:
+\[
+x_j(t) = |X_{j0}| \cos(\Omega_e t + \varphi_j)
+\]
+From this time response, both amplitude \( |X_{j0}| \) and phase \( \varphi_j \) can be measured. The time delay between input and output signals is defined as:
+\[
+\Delta t = -\frac{\varphi_j}{\Omega_e}
+\]
+Then, the experimental FRF at excitation frequency \( \Omega_e \) is given by:
+\[
+H_{jk}^{\text{exp}}(\Omega_e) = \frac{X_{j0}}{F_{k0}} = |H_{jk}(\Omega_e)| e^{j \varphi_j}
+\]
+This provides the magnitude and phase of the FRF at that specific excitation frequency.
+
+\subsection{Impulse Excitation}
+
+Impulse excitation applies a brief, high-energy input that ideally contains all frequencies with equal amplitude (as a Dirac delta). In practice, a dynamometric hammer is used to excite the structure. The hammer provides a short impulse \( F_k(t) \), and the system's response \( x_j(t) \) is recorded. Since an actual impulse is not ideal (its energy decays with frequency), stiffer tips are used to produce higher frequency content. To extract the FRF over a range of frequencies, the Discrete Fourier Transform (DFT) is applied to both input and output signals:
+\[
+F_k(t) \xrightarrow{\text{DFT}} F_k(\Omega_\ell), \quad x_j(t) \xrightarrow{\text{DFT}} X_j(\Omega_\ell)
+\]
+This yields a discrete frequency spectrum \( \Omega_\ell = \ell \cdot \frac{2\pi}{T} \), with \( T \) being the acquisition window. The experimental FRF is computed as:
+\[
+H_{jk}^{\text{exp}}(\Omega_\ell) = \frac{|X_j(\Omega_\ell)|}{|F_k(\Omega_\ell)|} e^{j(\varphi_j(\Omega_\ell) - \varphi_k(\Omega_\ell))}
+\]
+for all \( \ell = 1, 2, \ldots, n_f \) frequencies. This method allows estimating the FRF across a wide frequency range from a single test.
+
+\paragraph{Note on Limitations:}
+\begin{itemize}
+    \item The number of resolvable frequencies is limited by the sampling theorem (Shannon theorem).
+    \item The resolution depends on the acquisition time \( T \) and the low-pass nature of the frequency spectrum.
+    \item Longer acquisition allows finer frequency resolution.
+\end{itemize}
+
+\section{Modal Parameter Identification via FRF Fitting}
+
+When the system is lightly damped and modes are well-separated in frequency, one can extract modal parameters by analyzing individual resonance peaks using curve fitting techniques.
+
+\subsection{Theoretical Expression of the FRF}
+
+The theoretical FRF between output coordinate \( x_j \) and input coordinate \( x_k \) for an \( n \)-DOF system is:
+\[
+H_{jk}(\Omega) = \sum_{i=1}^n \frac{X_j^{(i)} X_k^{(i)}}{-\Omega^2 m_{q,ii} + j \Omega c_{q,ii} + k_{q,ii}}
+\]
+This equation models the system response as a sum of modal contributions. Each mode \( i \) contributes with a term characterized by its modal mass, damping, stiffness, and the product of the modal displacements at input and output.
+
+\subsection{Curve Fitting Strategy}
+
+In practice, it is common to isolate a frequency band \( \Omega \in [\Omega_A, \Omega_B] \) around a single resonance peak, and fit the FRF in that band using a simplified model:
+\[
+H_{jk}^{\text{exp}}(\Omega) = \underbrace{\frac{A_{j} + j B_{j}}{-\Omega^2 + j \Omega c_{q,ii} + k_{q,ii}}}_{\text{resonating mode}} + 
+\underbrace{C_{j} + j D_{j} + \frac{E_{j} + j F_{j}}{\Omega^2}}_{\text{residuals}}
+\]
+The first term captures the dominant resonating mode, while the other two approximate the effect of non-resonating modes via low-order residuals (quasi-static and seismographic terms).
+
+\subsection{Parameter Estimation via Least Squares}
+
+To estimate the modal parameters, define a parameter vector:
+\[
+\vv{x} = \begin{bmatrix}
+c_{q,ii} & k_{q,ii} & A_{j} & B_{j} & C_{j} & D_{j} & E_{j} & F_{j}
+\end{bmatrix}^T
+\]
+For \( n_f \) frequencies \( \Omega_r \in [\Omega_A, \Omega_B] \), define the residual between the measured and modeled FRF:
+\[
+e_r = H_{jk}^{\text{num}}(\Omega_r, \vv{x}) - H_{jk}^{\text{exp}}(\Omega_r)
+\]
+The optimal parameter vector minimizes the cost function:
+\[
+J(\vv{x}) = \sum_{r=1}^{n_f} \left( \operatorname{Re}(e_r)^2 + \operatorname{Im}(e_r)^2 \right)
+\]
+This nonlinear least squares problem is typically solved via iterative optimization algorithms. The solution yields direct estimates of \( c_{q,ii} \) and \( k_{q,ii} \), and the product \( X_j^{(i)} X_k^{(i)} \approx A_{j} \).
+
+\subsection{Residual Checks and Validation}
+
+After fitting:
+\begin{itemize}
+    \item The imaginary offset term \( B_{j} \) should be small compared to \( A_{j} \)
+    \item The residual terms \( C_{j}, D_{j}, E_{j}, F_{j} \) should also be small, validating the mode isolation assumption
+\end{itemize}
+
+To reconstruct the full mode shape \( \boldsymbol{X}^{(i)} \), repeat the fitting procedure across different outputs \( j \), keeping the same excitation point \( k \). The results will give \( A_{j} \propto X_j^{(i)} X_k^{(i)} \), which can be normalized across modes.
+
+\subsection{Initial Parameter Estimation}
+
+To ensure a fast and robust convergence of the nonlinear optimization procedure, it is essential to provide a good initial guess for the parameters. The following analytical methods can be used for this purpose, each based on modal assumptions around a resonance peak \( \omega_i \). 
+
+\paragraph{1. Stiffness estimation (with mass normalization):} Assuming a mass normalization \( m_{q,ii} = 1 \), the modal stiffness can be approximated from the frequency at which the FRF reaches its peak (resonance):
+\[
+k_{q,ii} = \omega_{i, \text{peak}}^2 \cdot m_{q,ii} = \omega_{i, \text{peak}}^2
+\]
+
+\paragraph{2. Damping estimation methods:} Two alternative techniques are available for estimating the modal damping \( c_{q,ii} \) and the damping ratio \( h_i \), both valid in the vicinity of a single resonance:
+
+\begin{itemize}
+    \item From the phase slope: near resonance, the FRF phase varies rapidly. The derivative of the phase curve at the peak frequency provides an estimate of the damping:
+    \[
+    \left. \frac{d\angle H_{jk}}{d\Omega} \right|_{\Omega = \omega_{i}} = -\frac{2}{c_{q,ii}} 
+    \quad \Rightarrow \quad
+    c_{q,ii} = -\frac{2}{\left. \frac{d\angle H_{jk}}{d\Omega} \right|_{\Omega = \omega_i}}
+    \]
+
+    \item From the bandwidth method (half-power points): let \( \omega_1 \) and \( \omega_2 \) be the frequencies at which the FRF magnitude falls to \( \frac{1}{\sqrt{2}} \) of its maximum. Then:
+    \[
+    c_{q,ii} = \frac{\omega_2^2 - \omega_1^2}{4 \omega_i}, \quad
+    h_i = \frac{c_{q,ii}}{2 \omega_i}
+    \]
+    This method is widely used due to its graphical simplicity.
+\end{itemize}
+
+\paragraph{3. Mode shape estimation from gain:} Assuming the real part of the FRF is negligible at resonance (which holds for lightly damped systems), the imaginary part can be used to estimate the modal gain \( A_{j} \), which is proportional to the product of the mode shapes at input and output:
+\[
+\operatorname{Re}\{ H_{jk}(\omega_i) \} \approx 0, \quad 
+\operatorname{Im}\{ H_{jk}(\omega_i) \} \approx \frac{A_{j}}{2 h_i \omega_i^2}
+\quad \Rightarrow \quad
+A_{j} = 2 h_i \omega_i^2 \cdot \operatorname{Im}\{ H_{jk}(\omega_i) \}
+\]
+By repeating this estimation for various output coordinates \( j \) while keeping the excitation point \( k \) fixed, the shape of the \( i \)-th mode can be reconstructed up to a scaling factor. 

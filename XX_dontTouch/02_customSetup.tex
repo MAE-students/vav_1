@@ -1,0 +1,139 @@
+%! TEX root = main.tex  % Specifies the main document file for multi-file projects
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom Colors, Math Symbols, and Highlighting Command
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define custom colors for use throughout the document.
+\definecolor{bluePoliMI}{cmyk}{0.4, 0.1, 0, 0.4}
+\definecolor{redUniPD}{RGB}{155, 0, 20}
+\definecolor{pythonGreen}{RGB}{0, 127, 0}
+\definecolor{specialGreen}{RGB}{50, 255, 120}
+\definecolor{bluePoliTO}{RGB}{0,86,145}
+
+% Define a command to highlight text with a light gray background.
+\newcommand{\hl}[1]{\colorbox{gray!10}{#1}}
+
+% Explicitly declare the plus sign as a math binary operator.
+%\DeclareMathSymbol{+}{\mathbin}{operators}{"2B}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Environments Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define custom theorem style with blue titles and italic body text
+\declaretheoremstyle[
+    headfont=\color{bluePoliMI}\normalfont\bfseries,
+    bodyfont=\color{black}\normalfont\itshape,
+]{colored}
+\theoremstyle{colored}
+\newtheorem{theorem}{Theorem}[section]       % Theorem environment, resets each section
+\newtheorem{proposition}{Proposition}[section] % Proposition environment, resets each section
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table Column Types and Spacing Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define custom column types:
+% - L: Left-aligned, fixed width, allows breaks
+% - C: Centered, fixed width
+% - R: Right-aligned, fixed width
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% Commands for vertical spacing in table cells
+\newcommand\T{\rule{0pt}{2.6ex}}
+\newcommand\B{\rule[-1.2ex]{0pt}{0pt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% List Formatting Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customize itemize lists:
+% - Level 1: Bullet
+% - Level 2: Circle
+% - Level 3: Dash
+% Remove extra item spacing
+\setlist[itemize,1]{label=\( \bullet \)}
+\setlist[itemize,2]{label=\( \circ \)}
+\setlist[itemize,3]{label=\( - \)}
+\setlist{nosep}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% General Layout Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength\parindent{0pt}  % Remove paragraph indentation
+
+% Custom chapter heading inside a colored box
+\newcommand{\chapterbox}[1]{
+    \tikz[baseline=(box.base)]{
+        \node[rectangle, rounded corners=2pt, fill=bluePoliMI, text=white, inner xsep=10pt, inner ysep=7pt](box){#1};
+    }
+}
+
+% Chapter title formatting
+\titleformat{\chapter}[display]
+    {\huge\bfseries}            % Title style
+    {\chapterbox{\thechapter}}  % Chapter number inside a box
+    {1ex}                        % Vertical space
+    {\scshape}                  % Text style
+
+% Custom section heading inside a colored box
+\newcommand{\sectionbox}[1]{
+    \tikz[baseline=(box.base)]{
+        \node[rectangle, rounded corners=1pt, fill=bluePoliMI, text=white, inner xsep=4pt, inner ysep=3pt](box){#1};
+    } 
+}
+
+% Section title formatting
+\titleformat{\section}[hang]
+    {\Large\bfseries}          % Title style
+    {\sectionbox{\thesection}} % Section number inside a box
+    {1em}                       % Horizontal space
+    {\scshape}                 % Text style
+
+% Uncomment to order section with letter
+%\renewcommand{\thesection}{\thechapter.\alph{section}}
+
+\titleformat{\subsection}[hang]
+    {\large\bfseries}          % Subsection title style
+    {\sectionbox{\thesubsection}} % Reuse section box
+    {1em}                       % Space between number and text
+    {\scshape}                 % Text style
+
+% Uncomment to order subsection romanically
+%\renewcommand{\thesubsection}{\thesection.\roman{subsection}}
+
+\titleformat{\subsubsection}[hang]
+    {\normalsize}              % Subsubsection title style
+    {}{0ex}{\bfseries\scshape} % No number box, styled text
+
+% Customization of the \@chapter command to include numbered chapters in TOC and LoL
+\makeatletter
+\def\@chapter[#1]#2{
+    \ifnum \c@secnumdepth >\m@ne
+        \if@mainmatter
+            \refstepcounter{chapter} % Increment chapter counter
+            \typeout{\@chapapp\space\thechapter.} % Print chapter info to log
+            \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}#1} % Add to TOC
+        \else
+            \addcontentsline{toc}{chapter}{#1} % Unnumbered chapter in TOC
+        \fi
+    \else
+        \addcontentsline{toc}{chapter}{#1} % Unnumbered chapter in TOC
+    \fi
+    \chaptermark{#1} % Set chapter header
+    \addtocontents{lof}{\protect\addvspace{10\p@}} % Add space in LoF
+    \addtocontents{lot}{\protect\addvspace{10\p@}} % Add space in LoT
+    \if@twocolumn
+        \@topnewpage[\@makechapterhead{#2}] % Format for two-column layout
+    \else
+        \@makechapterhead{#2} % Standard chapter heading
+        \@afterheading
+    \fi
+}
+
+% Patch \@chapter to add spacing for chapter entries in the List of Listings (LoL)
+\patchcmd{\@chapter}% <cmd>
+  {\addtocontents}% <search>
+  {\addtocontents{lol}{\protect\addvspace{10\p@}}% Add per-chapter space in LoL
+   \addtocontents}% <replace>
+  {}{}% <success><failure>
+\makeatother
