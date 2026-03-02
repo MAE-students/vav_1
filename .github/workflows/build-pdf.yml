@@ -4,14 +4,15 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.actor != 'github-actions[bot]'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Compile LaTeX
         uses: xu-cheng/latex-action@v3
@@ -23,5 +24,5 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add main.pdf
-          git commit -m "Auto-build PDF"
+          git commit -m "Auto-build PDF" || echo "No changes"
           git push
